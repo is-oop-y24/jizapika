@@ -253,6 +253,7 @@ namespace Shops.Tests
             productList.Add(productForBuy);
             var purveyorEvent = new PurveyorEvent(supply);
             var customerEvent = new CustomerEvent(productList, customer);
+            
             if (t)
             {
                 purveyorEvent.Delivery(ref shop);
