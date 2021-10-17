@@ -32,7 +32,7 @@ namespace Isu.Services
             }
 
             if (grNum == -1) throw new IsuException($"Группы {group.Name()} не существует.");
-            var st = _grData[grNum].AddStudent(name, _idSt);
+            Student st = _grData[grNum].AddStudent(name, _idSt);
             _idSt++;
             return st;
         }
@@ -157,7 +157,7 @@ namespace Isu.Services
             if (newMin > 9) throw new IsuException($"Наибольшее значение курса не может быть {newMax}");
             _maxNumCourse = newMax;
             _minNumCourse = newMin;
-            foreach (var curGr in _grData)
+            foreach (Group curGr in _grData)
             {
                 var course = new CourseNumber(curGr.Name().Course(), newMin, newMax);
                 curGr.ChangeCourseNumber(course);
