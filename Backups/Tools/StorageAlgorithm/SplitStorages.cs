@@ -15,7 +15,7 @@ namespace Backups.Tools.StorageAlgorithm
             {
                 Storage storage = repository.CopyObject(jobObject);
                 var algorithmStorageList = new List<Storage>() { storage };
-                storages.Add(repository.CompressingObjects(algorithmStorageList, backUpName, restorePointName));
+                storages.Add(repository.CompressingObjects(algorithmStorageList, backUpName, restorePointName, repository.ObjectNameWithoutExtension(jobObject.Way)));
             }
 
             return storages;

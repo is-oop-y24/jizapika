@@ -13,23 +13,40 @@ namespace Backups.Tools.Repository
         private string _root;
         public FileSystem(string root)
         {
-            if (!Directory.Exists(root)) throw new BackUpsExceptions($"Not correct directory name: {root}");
+            if (!Directory.Exists(root))
+                throw new BackUpsExceptions($"Not correct directory name: {root}");
             _root = root;
         }
 
         public Storage CopyObject(JobObject jobObject)
         {
-            if (!File.Exists(jobObject.Way)) throw new BackUpsExceptions($"Not correct file name: {jobObject.Way}.");
+            if (!File.Exists(jobObject.Way))
+                throw new BackUpsExceptions($"Not correct file name: {jobObject.Way}.");
             return new Storage(jobObject.Way, false);
         }
 
-        public Storage CompressingObjects(List<Storage> storages, string backUpName, string restorePointName)
+        public Storage CompressingObjects(
+            List<Storage> storages, string backUpName, string restorePointName, string compressedName)
         {
-            string directoryName = PackStoragesToRestorePoint(storages, backUpName, restorePointName);
-            string compressedFile = directoryName + ".zip";
-            ZipFile.CreateFromDirectory(directoryName, compressedFile);
-            Directory.Delete(directoryName, true);
+            string fakeDirectoryName = PackStoragesToRestorePoint(storages, backUpName, restorePointName + "_fake");
+            string normalDirectoryName = Path.Combine(_root, backUpName, restorePointName);
+            Directory.CreateDirectory(normalDirectoryName);
+            string compressedFile = Path.Combine(normalDirectoryName, compressedName) + ".zip";
+            ZipFile.CreateFromDirectory(fakeDirectoryName, compressedFile);
+            Directory.Delete(fakeDirectoryName, true);
             return new Storage(compressedFile, true);
+        }
+
+        public string ObjectNameWithoutExtension(string way)
+        {
+            try
+            {
+                return Path.GetFileNameWithoutExtension(way);
+            }
+            catch (FormatException)
+            {
+                throw new BackUpsExceptions($"Not correct file name: {way}.");
+            }
         }
 
         private string PackStoragesToRestorePoint(
@@ -39,14 +56,13 @@ namespace Backups.Tools.Repository
             Directory.CreateDirectory(directoryWay);
             foreach (Storage storage in storages)
             {
-                FileStream fstream = File.Create(Path.Combine(directoryWay, ObjectName(storage.Way)));
-                fstream.Close();
+                File.Create(Path.Combine(directoryWay, ObjectNameWithExtension(storage.Way))).Close();
             }
 
             return directoryWay;
         }
 
-        private string ObjectName(string way)
+        private string ObjectNameWithExtension(string way)
         {
             try
             {
