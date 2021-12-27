@@ -22,7 +22,7 @@ namespace Banks.Services.UI.Commands.CommandPrint
             bool flag = true;
             while (flag)
             {
-                switch (_userInterface.WriteAndRead("At someone client, in someone bank or all?"))
+                switch (_userInterface.WriteAndRead("At someone client, in someone bank or all? "))
                 {
                     case "client":
                         string clientIdString = _userInterface.WriteAndRead("Enter client id.");
@@ -54,7 +54,7 @@ namespace Banks.Services.UI.Commands.CommandPrint
                         ImmutableList<Account> immutableAccounts = centralBank.Accounts.ImmutableAccounts;
                         foreach (Account account in immutableAccounts)
                         {
-                            new PrintConcreteClient(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
+                            new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
                         }
 
                         return true;

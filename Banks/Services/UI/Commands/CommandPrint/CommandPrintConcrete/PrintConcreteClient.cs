@@ -19,12 +19,12 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             shouldQuit = false;
             try
             {
-                _userInterface.Write($"id: {_id}"
-                                     + $"client name: {centralBank.Clients.FindClient(_id).Name} "
-                                     + $"client surname: {centralBank.Clients.FindClient(_id).Surname} "
-                                     + $"client passport: {centralBank.Clients.FindClient(_id).Passport} "
-                                     + $"client address: {centralBank.Clients.FindClient(_id).Address}"
-                                     + $"is client approved: {centralBank.Clients.FindClient(_id).IsApproved()}");
+                _userInterface.Write($"id: {_id}, "
+                                     + $"client name: {centralBank.Clients.FindClient(_id).Name}, "
+                                     + $"client surname: {centralBank.Clients.FindClient(_id).Surname}, "
+                                     + $"client passport: {centralBank.Clients.FindClient(_id).Passport}, "
+                                     + $"client address: {centralBank.Clients.FindClient(_id).Address}, "
+                                     + $"is client approved: {centralBank.Clients.FindClient(_id).IsApproved()}.");
                 return true;
             }
             catch (Exception)

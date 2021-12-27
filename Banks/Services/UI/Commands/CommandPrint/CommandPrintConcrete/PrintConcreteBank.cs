@@ -19,7 +19,7 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             shouldQuit = false;
             try
             {
-                _userInterface.Write($"id: {_id}" + $"name: {centralBank.Banks.FindBank(_id).Name}");
+                _userInterface.Write($"id: {_id}, " + $"name: {centralBank.Banks.FindBank(_id).Name}.");
                 return true;
             }
             catch (Exception)

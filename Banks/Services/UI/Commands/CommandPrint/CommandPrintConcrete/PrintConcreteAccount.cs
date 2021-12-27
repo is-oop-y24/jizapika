@@ -21,9 +21,9 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             try
             {
                 string accountType = centralBank.Accounts.FindAccount(_id).Type();
-                _userInterface.Write($"id: {_id}"
-                                     + $"account type: {accountType} "
-                                     + $"sum: {centralBank.Accounts.FindAccount(_id).Sum} ");
+                _userInterface.Write($"id: {_id}, "
+                                     + $"account type: {accountType}, "
+                                     + $"sum: {centralBank.Accounts.FindAccount(_id).Sum}. ");
                 return true;
             }
             catch (Exception)

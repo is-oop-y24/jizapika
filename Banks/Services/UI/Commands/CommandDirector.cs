@@ -78,6 +78,8 @@ namespace Banks.Services.UI.Commands
                     return new CreateBank(_userInterface);
                 case "client":
                     return new CreateClient(_userInterface);
+                case "account":
+                    return new CreateAccount(_userInterface);
                 default:
                     return new UnknownCommand(_userInterface);
             }
@@ -91,11 +93,11 @@ namespace Banks.Services.UI.Commands
 
             switch (FirstWord(command))
             {
-                case "Replenishment":
+                case "replenishment":
                     return new MakeReplenishment(_userInterface);
-                case "Translation":
+                case "translation":
                     return new MakeTranslation(_userInterface);
-                case "Withdrawal":
+                case "withdrawal":
                     return new MakeWithdrawal(_userInterface);
                 default:
                     return new UnknownCommand(_userInterface);
