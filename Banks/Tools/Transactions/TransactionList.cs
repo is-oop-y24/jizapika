@@ -15,7 +15,8 @@ namespace Banks.Tools.Transactions
 
         public void AddTransaction(Transaction transaction)
         {
-            _transactions.Add(transaction);
+            if (transaction != null)
+                _transactions.Add(transaction);
         }
     }
 }

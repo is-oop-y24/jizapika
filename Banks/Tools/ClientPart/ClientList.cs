@@ -14,10 +14,9 @@ namespace Banks.Tools.ClientPart
 
         public ImmutableList<Client> ImmutableClients => _clients.ToImmutableList();
 
-        public Client AddClient(Client client)
+        public void AddClient(Client client)
         {
             _clients.Add(client);
-            return client;
         }
     }
 }

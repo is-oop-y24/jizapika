@@ -15,7 +15,8 @@ namespace Banks.Tools.Accounts
 
         public void AddAccount(Account account)
         {
-            _accounts.Add(account);
+            if (account != null)
+                _accounts.Add(account);
         }
     }
 }
