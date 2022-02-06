@@ -26,7 +26,7 @@ namespace Banks.Tools.Accounts
         public new uint Id { get; }
         public new double Sum { get; internal set; }
 
-        public override IoTransaction Withdrawal(double withdrawalSum, uint transactionId)
+        public override WithdrawalTransaction Withdrawal(double withdrawalSum, uint transactionId)
         {
             if (!_client.IsApproved())
                 throw new BankException($"Client isn't approved and cannot make a withdrawal.");
@@ -35,10 +35,10 @@ namespace Banks.Tools.Accounts
             return new IoTransaction(this, transactionId, -withdrawalSum);
         }
 
-        public override IoTransaction Replenishment(double replenishmentSum, uint transactionId)
+        public override ReplenishmentTransaction Replenishment(double replenishmentSum, uint transactionId)
             => new IoTransaction(this, transactionId, replenishmentSum);
 
-        public override ConnectTransaction TranslationTo(Account otherAccount, double translationSum, uint transactionId)
+        public override TranslationToTransaction TranslationTo(Account otherAccount, double translationSum, uint transactionId)
         {
             if (!_client.IsApproved())
                 throw new BankException($"Client isn't approved and cannot make a translation.");
