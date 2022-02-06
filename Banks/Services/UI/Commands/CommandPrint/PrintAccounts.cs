@@ -29,7 +29,7 @@ namespace Banks.Services.UI.Commands.CommandPrint
                         while (!IsUint(clientIdString) && IsCorrectBankId(centralBank, clientIdString))
                             clientIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
                         uint clientId = uint.Parse(clientIdString);
-                        foreach (Account account in centralBank.Clients.FindClient(clientId).ClientAccounts(centralBank.Accounts).Accounts)
+                        foreach (Account account in centralBank.Clients.FindClient(clientId).ClientAccounts(centralBank.Accounts).ImmutableAccounts)
                         {
                             new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
                         }
@@ -41,9 +41,9 @@ namespace Banks.Services.UI.Commands.CommandPrint
                             bankIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
                         uint bankId = uint.Parse(bankIdString);
                         foreach (Client client in centralBank.Banks.FindBank(bankId).BankClients(centralBank.Clients)
-                            .Clients)
+                            .ImmutableClients)
                         {
-                            foreach (Account account in centralBank.Clients.FindClient(client.Id).ClientAccounts(centralBank.Accounts).Accounts)
+                            foreach (Account account in centralBank.Clients.FindClient(client.Id).ClientAccounts(centralBank.Accounts).ImmutableAccounts)
                             {
                                 new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
                             }

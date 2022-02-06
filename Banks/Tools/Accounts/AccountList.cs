@@ -1,19 +1,21 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Banks.Tools.Accounts
 {
     public class AccountList
     {
+        private List<Account> _accounts;
         public AccountList()
         {
-            Accounts = new List<Account>();
+            _accounts = new List<Account>();
         }
 
-        public List<Account> Accounts { get; }
+        public ImmutableList<Account> ImmutableAccounts => _accounts.ToImmutableList();
 
         public void AddAccount(Account account)
         {
-            Accounts.Add(account);
+            _accounts.Add(account);
         }
     }
 }

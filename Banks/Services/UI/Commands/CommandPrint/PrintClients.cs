@@ -30,7 +30,7 @@ namespace Banks.Services.UI.Commands.CommandPrint
                             bankIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
                         uint bankId = uint.Parse(bankIdString);
                         foreach (Client client in centralBank.Banks.FindBank(bankId).BankClients(centralBank.Clients)
-                            .Clients)
+                            .ImmutableClients)
                         {
                             new PrintConcreteClient(_userInterface, client.Id).RunCommand(out shouldQuit, centralBank);
                         }

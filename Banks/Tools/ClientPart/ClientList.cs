@@ -1,18 +1,22 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Banks.Tools.ClientPart
 {
     public class ClientList
     {
+        private List<Client> _clients;
+
         public ClientList()
         {
-            Clients = new List<Client>();
+            _clients = new List<Client>();
         }
 
-        public List<Client> Clients { get; }
+        public ImmutableList<Client> ImmutableClients => _clients.ToImmutableList();
+
         public Client AddClient(Client client)
         {
-            Clients.Add(client);
+            _clients.Add(client);
             return client;
         }
     }

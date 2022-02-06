@@ -59,10 +59,10 @@ namespace Banks.Tools.ClientPart
         private void CancelAllTransaction(AllAccounts allAccounts, AllTransactions allTransactions)
         {
             AccountList accounts = ClientAccounts(allAccounts);
-            foreach (Account account in accounts.Accounts)
+            foreach (Account account in accounts.ImmutableAccounts)
             {
                 TransactionList transactions = account.AccountTransactions(allTransactions);
-                foreach (Transaction transaction in transactions.Transactions)
+                foreach (Transaction transaction in transactions.ImmutableTransactions)
                 {
                     transaction.Cancel();
                 }
@@ -72,10 +72,10 @@ namespace Banks.Tools.ClientPart
         private void UnCancelAllTransaction(AllAccounts allAccounts, AllTransactions allTransactions)
         {
             AccountList accounts = ClientAccounts(allAccounts);
-            foreach (Account account in accounts.Accounts)
+            foreach (Account account in accounts.ImmutableAccounts)
             {
                 TransactionList transactions = account.AccountTransactions(allTransactions);
-                foreach (Transaction transaction in transactions.Transactions)
+                foreach (Transaction transaction in transactions.ImmutableTransactions)
                 {
                     transaction.UnCancel();
                 }

@@ -1,19 +1,21 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Banks.Tools.Transactions
 {
     public class TransactionList
     {
+        private List<Transaction> _transactions;
         public TransactionList()
         {
-            Transactions = new List<Transaction>();
+            _transactions = new List<Transaction>();
         }
 
-        public List<Transaction> Transactions { get; }
+        public ImmutableList<Transaction> ImmutableTransactions => _transactions.ToImmutableList();
 
         public void AddTransaction(Transaction transaction)
         {
-            Transactions.Add(transaction);
+            _transactions.Add(transaction);
         }
     }
 }
