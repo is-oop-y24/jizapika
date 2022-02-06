@@ -44,13 +44,6 @@ namespace Banks.Tools.Transactions
         }
 
         public Transaction FindTransaction(uint id)
-        {
-            foreach (Transaction transaction in _transactions.Where(transaction => transaction.Id == id))
-            {
-                return transaction;
-            }
-
-            throw new BankException($"Not correct id");
-        }
+            => _transactions.FirstOrDefault(transaction => transaction.Id == id);
     }
 }

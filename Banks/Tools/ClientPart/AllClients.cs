@@ -29,14 +29,7 @@ namespace Banks.Tools.ClientPart
         }
 
         public Client FindClient(uint id)
-        {
-            foreach (Client client in _clients.Where(client => client.Id == id))
-            {
-                return client;
-            }
-
-            throw new BankException($"Not correct id");
-        }
+            => _clients.FirstOrDefault(client => client.Id == id);
 
         public Client RenameClient(uint id, string newName)
         {

@@ -44,15 +44,7 @@ namespace Banks.Tools.Accounts
         }
 
         public Account FindAccount(uint id)
-        {
-            foreach (Account account in _accounts.Where(account => account.Id == id))
-            {
-                return account;
-            }
-
-            throw new BankException($"Not correct id");
-        }
-
+            => _accounts.FirstOrDefault(account => account.Id == id);
         public void WaitDay(uint currentDay)
         {
             foreach (Account account in _accounts)
