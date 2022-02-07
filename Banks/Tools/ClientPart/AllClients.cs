@@ -65,12 +65,5 @@ namespace Banks.Tools.ClientPart
             client.BlockHim(accounts, transactions);
             return client;
         }
-
-        public Client UnBlockClient(uint id, AllAccounts accounts, AllTransactions transactions)
-        {
-            Client client = FindClient(id);
-            client.UnBlockHim(accounts, transactions);
-            return client;
-        }
     }
 }

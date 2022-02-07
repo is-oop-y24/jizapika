@@ -6,33 +6,41 @@ namespace Banks.Tools.Transactions
     {
         private Account _to;
         private bool _isComleted;
-        private uint _id;
 
         public ReplenishmentTransaction(Account to, uint id, double sum)
         {
             _isComleted = false;
             _to = to;
-            _id = id;
+            Id = id;
             Ammount = sum;
         }
 
-        public new double Ammount { get; set; }
+        public new uint Id { get; }
+
+        public new double Ammount { get; }
 
         public override void MakeIt()
         {
-            _isComleted = true;
-            _to.Sum += Ammount;
+            if (!_isComleted)
+            {
+                _isComleted = true;
+                _to.MakeReplenishment(Ammount);
+            }
         }
 
         public override void CancelIt()
         {
-            _to.Sum -= Ammount;
+            if (_isComleted)
+            {
+                _isComleted = false;
+                _to.CancelMakeReplenishment(Ammount);
+            }
         }
 
         public override bool IsAccountId(uint id)
             => _to.Id == id;
 
         public override string Type()
-            => "Connect";
+            => "Replenishment";
     }
 }

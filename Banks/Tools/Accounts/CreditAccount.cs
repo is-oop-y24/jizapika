@@ -26,25 +26,33 @@ namespace Banks.Tools.Accounts
         public new uint Id { get; }
         public new double Sum { get; internal set; }
 
-        public override WithdrawalTransaction Withdrawal(double withdrawalSum, uint transactionId)
+        public override void MakeWithdrawal(double withdrawalSum)
         {
             if (!_client.IsApproved())
                 throw new BankException($"Client isn't approved and cannot make a withdrawal.");
             if (Sum - withdrawalSum < _settings.LowerLimit)
                 throw new BankException($"Credit account doesn't have enough money for the transaction.");
-            return new IoTransaction(this, transactionId, -withdrawalSum);
+            Sum -= withdrawalSum;
         }
 
-        public override ReplenishmentTransaction Replenishment(double replenishmentSum, uint transactionId)
-            => new IoTransaction(this, transactionId, replenishmentSum);
+        public override void MakeReplenishment(double replenishmentSum)
+        {
+            Sum += replenishmentSum;
+        }
 
-        public override TranslationToTransaction TranslationTo(Account otherAccount, double translationSum, uint transactionId)
+        public override void MakeTranslationTo(Account otherAccount, double translationSum)
         {
             if (!_client.IsApproved())
                 throw new BankException($"Client isn't approved and cannot make a translation.");
             if (Sum - translationSum < _settings.LowerLimit)
                 throw new BankException($"Credit account doesn't have enough money for the transaction.");
-            return new ConnectTransaction(this, otherAccount, transactionId, translationSum);
+            otherAccount.TranslationFrom(translationSum);
+            Sum -= translationSum;
+        }
+
+        public override void TranslationFrom(double translationSum)
+        {
+            Sum += translationSum;
         }
 
         public override void WaitDay(uint currentDate)

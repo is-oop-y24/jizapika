@@ -6,9 +6,32 @@ namespace Banks.Tools.Accounts
     {
         public double Sum { get; internal set; }
         public uint Id { get; }
-        public abstract IoTransaction Withdrawal(double withdrawalSum, uint transactionId);
-        public abstract IoTransaction Replenishment(double replenishmentSum, uint transactionId);
-        public abstract ConnectTransaction TranslationTo(Account otherAccount, double translationSum, uint transactionId);
+        public abstract void MakeWithdrawal(double withdrawalSum);
+        public abstract void MakeReplenishment(double replenishmentSum);
+        public abstract void MakeTranslationTo(Account otherAccount, double translationSum);
+        public abstract void TranslationFrom(double translationSum);
+
+        public void CancelMakeWithdrawal(double withdrawalSum)
+        {
+            Sum += withdrawalSum;
+        }
+
+        public void CancelMakeReplenishment(double replenishmentSum)
+        {
+            Sum -= replenishmentSum;
+        }
+
+        public void CancelMakeTranslationTo(Account otherAccount, double translationSum)
+        {
+            otherAccount.CancelTranslationFrom(translationSum);
+            Sum += translationSum;
+        }
+
+        public void CancelTranslationFrom(double translationSum)
+        {
+            Sum -= translationSum;
+        }
+
         public abstract TransactionList AccountTransactions(AllTransactions allTransactions);
         public abstract void WaitDay(uint currentDate);
         public abstract bool IsClientId(uint id);

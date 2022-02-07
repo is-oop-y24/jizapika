@@ -19,25 +19,25 @@ namespace Banks.Tools.Transactions
 
         public ImmutableList<Transaction> ImmutableTransactions => _transactions.ToImmutableList();
 
-        public IoTransaction AddWithdrawalTransaction(Account account, double sum)
+        public WithdrawalTransaction AddWithdrawalTransaction(Account account, double sum)
         {
-            IoTransaction transaction = account.Withdrawal(sum, _currentNumberId);
+            var transaction = new WithdrawalTransaction(account, _currentNumberId, sum);
             _transactions.Add(transaction);
             _currentNumberId++;
             return transaction;
         }
 
-        public IoTransaction AddReplenishmentTransaction(Account account, double sum)
+        public ReplenishmentTransaction AddReplenishmentTransaction(Account account, double sum)
         {
-            IoTransaction transaction = account.Replenishment(sum, _currentNumberId);
+            var transaction = new ReplenishmentTransaction(account, _currentNumberId, sum);
             _transactions.Add(transaction);
             _currentNumberId++;
             return transaction;
         }
 
-        public ConnectTransaction AddTranslationTransaction(Account from, Account to, double sum)
+        public TranslationTransaction AddTranslationTransaction(Account from, Account to, double sum)
         {
-            ConnectTransaction transaction = from.TranslationTo(to, sum, _currentNumberId);
+            var transaction = new TranslationTransaction(from, to, _currentNumberId, sum);
             _transactions.Add(transaction);
             _currentNumberId++;
             return transaction;

@@ -38,12 +38,17 @@ namespace Banks.Tools
         public Account AddDepositAccount(Client client)
             => Accounts.AddDepositAccount(client.Bank.Settings.DepositSettings, client, _currentDay);
 
-        public IoTransaction MakeWithdrawal(Account account, double sum)
+        public WithdrawalTransaction AddWithdrawal(Account account, double sum)
             => Transactions.AddWithdrawalTransaction(account, sum);
-        public IoTransaction MakeReplenishment(Account account, double sum)
+        public ReplenishmentTransaction AddReplenishment(Account account, double sum)
             => Transactions.AddReplenishmentTransaction(account, sum);
-        public ConnectTransaction MakeTranslation(Account fromAccount, Account toAccount, double sum)
+        public TranslationTransaction AddTranslation(Account fromAccount, Account toAccount, double sum)
             => Transactions.AddTranslationTransaction(fromAccount, toAccount, sum);
+
+        public void MakeTransaction(Transaction transaction)
+        {
+            transaction.MakeIt();
+        }
 
         public void AddDays(uint days)
         {
@@ -67,9 +72,6 @@ namespace Banks.Tools
 
         public Client BlockClient(uint id)
             => Clients.BlockClient(id, Accounts, Transactions);
-
-        public Client UnBlockClient(uint id)
-            => Clients.UnBlockClient(id, Accounts, Transactions);
 
         private void WaitOneDay()
         {

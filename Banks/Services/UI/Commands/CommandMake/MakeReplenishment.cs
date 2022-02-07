@@ -37,7 +37,7 @@ namespace Banks.Services.UI.Commands.CommandMake
                     }
                 }
 
-                centralBank.MakeReplenishment(centralBank.Accounts.FindAccount(accountId), replenishmentSum);
+                centralBank.AddReplenishment(centralBank.Accounts.FindAccount(accountId), replenishmentSum).MakeIt();
 
                 return true;
             }

@@ -2,14 +2,16 @@
 
 namespace Banks.Tools.Transactions
 {
-    public class WithdrawalTransaction : Transaction
+    public class TranslationTransaction : Transaction
     {
         private Account _from;
+        private Account _to;
         private bool _isComleted;
 
-        public WithdrawalTransaction(Account from, uint id, double sum)
+        public TranslationTransaction(Account from, Account to, uint id, double sum)
         {
             _isComleted = false;
+            _to = to;
             _from = from;
             Id = id;
             Ammount = sum;
@@ -24,7 +26,7 @@ namespace Banks.Tools.Transactions
             if (!_isComleted)
             {
                 _isComleted = true;
-                _from.MakeWithdrawal(Ammount);
+                _from.MakeTranslationTo(_to, Ammount);
             }
         }
 
@@ -33,14 +35,14 @@ namespace Banks.Tools.Transactions
             if (_isComleted)
             {
                 _isComleted = false;
-                _from.CancelMakeWithdrawal(Ammount);
+                _from.CancelMakeTranslationTo(_to, Ammount);
             }
         }
 
         public override bool IsAccountId(uint id)
-            => _from.Id == id;
+            => _to.Id == id;
 
         public override string Type()
-            => "Withdrawal";
+            => "Translation";
     }
 }

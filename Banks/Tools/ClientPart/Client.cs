@@ -48,14 +48,6 @@ namespace Banks.Tools.ClientPart
             _isBlocked = true;
         }
 
-        public void UnBlockHim(AllAccounts allAccounts, AllTransactions allTransactions)
-        {
-            if (_isBlocked)
-                return;
-            UnCancelAllTransaction(allAccounts, allTransactions);
-            _isBlocked = false;
-        }
-
         private void CancelAllTransaction(AllAccounts allAccounts, AllTransactions allTransactions)
         {
             AccountList accounts = ClientAccounts(allAccounts);
@@ -64,20 +56,7 @@ namespace Banks.Tools.ClientPart
                 TransactionList transactions = account.AccountTransactions(allTransactions);
                 foreach (Transaction transaction in transactions.ImmutableTransactions)
                 {
-                    transaction.Cancel();
-                }
-            }
-        }
-
-        private void UnCancelAllTransaction(AllAccounts allAccounts, AllTransactions allTransactions)
-        {
-            AccountList accounts = ClientAccounts(allAccounts);
-            foreach (Account account in accounts.ImmutableAccounts)
-            {
-                TransactionList transactions = account.AccountTransactions(allTransactions);
-                foreach (Transaction transaction in transactions.ImmutableTransactions)
-                {
-                    transaction.UnCancel();
+                    transaction.CancelIt();
                 }
             }
         }

@@ -42,10 +42,10 @@ namespace Banks.Services.UI.Commands.CommandMake
                     }
                 }
 
-                centralBank.MakeTranslation(
+                centralBank.AddTranslation(
                     centralBank.Accounts.FindAccount(fromAccountId),
                     centralBank.Accounts.FindAccount(toAccountId),
-                    translationSum);
+                    translationSum).MakeIt();
 
                 return true;
             }
