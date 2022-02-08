@@ -42,7 +42,7 @@ namespace Banks.Tools.Transactions
         public override bool IsAccountId(uint id)
             => _to.Id == id;
 
-        public override string Type()
-            => "Translation";
+        public override TransactionType Type()
+            => TransactionType.Translation;
     }
 }

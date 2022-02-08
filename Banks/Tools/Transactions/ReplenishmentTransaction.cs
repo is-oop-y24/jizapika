@@ -40,7 +40,7 @@ namespace Banks.Tools.Transactions
         public override bool IsAccountId(uint id)
             => _to.Id == id;
 
-        public override string Type()
-            => "Replenishment";
+        public override TransactionType Type()
+            => TransactionType.Replenishment;
     }
 }

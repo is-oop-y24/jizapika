@@ -40,7 +40,7 @@ namespace Banks.Tools.Transactions
         public override bool IsAccountId(uint id)
             => _from.Id == id;
 
-        public override string Type()
-            => "Withdrawal";
+        public override TransactionType Type()
+            => TransactionType.Withdrawal;
     }
 }

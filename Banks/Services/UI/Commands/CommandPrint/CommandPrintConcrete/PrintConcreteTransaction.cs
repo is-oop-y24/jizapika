@@ -1,5 +1,6 @@
 using System;
 using Banks.Tools;
+using Banks.Tools.Transactions;
 
 namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
 {
@@ -19,7 +20,7 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             shouldQuit = false;
             try
             {
-                string transactionType = centralBank.Transactions.FindTransaction(_id).Type();
+                TransactionType transactionType = centralBank.Transactions.FindTransaction(_id).Type();
                 _userInterface.Write($"id: {_id}, "
                                      + $"transaction type: {transactionType}, "
                                      + $"sum: {centralBank.Transactions.FindTransaction(_id).Ammount}.");

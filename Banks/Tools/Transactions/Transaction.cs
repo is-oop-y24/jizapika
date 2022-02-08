@@ -7,6 +7,6 @@ namespace Banks.Tools.Transactions
         public abstract void MakeIt();
         public abstract void CancelIt();
         public abstract bool IsAccountId(uint id);
-        public abstract string Type();
+        public abstract TransactionType Type();
     }
 }
