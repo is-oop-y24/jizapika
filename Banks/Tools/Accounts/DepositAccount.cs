@@ -58,9 +58,9 @@ namespace Banks.Tools.Accounts
 
         public override void WaitDay(uint currentDate)
         {
-            if (_currentDate > _dateOfCreation + _settings.DaysDuration) return;
-            if (_accumulatedSum < 0) _accumulatedSum += _settings.MonthlyPercentCommission(Sum) / 30 * Sum;
-            if ((_currentDate == _dateOfCreation + _settings.DaysDuration) || (currentDate - _dateOfCreation) % 30 == 0)
+            if (currentDate > _dateOfCreation + _settings.DaysDuration) return;
+            _accumulatedSum += _settings.MonthlyPercentCommission(Sum) / 30 * Sum;
+            if ((currentDate == _dateOfCreation + _settings.DaysDuration) || (currentDate - _dateOfCreation) % 30 == 0)
             {
                 Sum += _accumulatedSum;
                 _accumulatedSum = 0;
@@ -80,7 +80,7 @@ namespace Banks.Tools.Accounts
         public override bool IsClientId(uint id)
             => _client.Id == id;
 
-        public override string Type()
-            => "deposit";
+        public override AccountType Type()
+            => AccountType.Deposit;
     }
 }

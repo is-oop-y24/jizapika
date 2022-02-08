@@ -35,6 +35,6 @@ namespace Banks.Tools.Accounts
         public abstract TransactionList AccountTransactions(AllTransactions allTransactions);
         public abstract void WaitDay(uint currentDate);
         public abstract bool IsClientId(uint id);
-        public abstract string Type();
+        public abstract AccountType Type();
     }
 }

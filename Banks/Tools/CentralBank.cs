@@ -29,13 +29,13 @@ namespace Banks.Tools
         public Client AddClient(Bank bank, string name, string surname)
             => Clients.AddClient(bank, name, surname);
 
-        public Account AddCreditAccount(Client client)
+        public CreditAccount AddCreditAccount(Client client)
             => Accounts.AddCreditAccount(client.Bank.Settings.CreditSettings, client, _currentDay);
 
-        public Account AddDebitAccount(Client client)
+        public DebitAccount AddDebitAccount(Client client)
             => Accounts.AddDebitAccount(client.Bank.Settings.DebitSettings, client, _currentDay);
 
-        public Account AddDepositAccount(Client client)
+        public DepositAccount AddDepositAccount(Client client)
             => Accounts.AddDepositAccount(client.Bank.Settings.DepositSettings, client, _currentDay);
 
         public WithdrawalTransaction AddWithdrawal(Account account, double sum)
@@ -75,8 +75,8 @@ namespace Banks.Tools
 
         private void WaitOneDay()
         {
-            Accounts.WaitDay(_currentDay);
             _currentDay++;
+            Accounts.WaitDay(_currentDay);
         }
     }
 }

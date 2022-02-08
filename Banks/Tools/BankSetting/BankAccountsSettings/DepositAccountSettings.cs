@@ -34,10 +34,9 @@ namespace Banks.Tools.BankSetting.BankAccountsSettings
 
         public double MonthlyPercentCommission(double currentAccountSum)
         {
-            if (!CommissionsSettings.Any())
-                return CommissionsSettings[0].MonthCommission(currentAccountSum);
-            else
+            if (CommissionsSettings.Count == 0)
                 throw new BankException($"DepositSettings aren't.");
+            return CommissionsSettings[0].MonthCommission(currentAccountSum);
         }
     }
 }

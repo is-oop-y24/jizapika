@@ -2,14 +2,14 @@ namespace Banks.Tools.BankSetting.BankAccountsSettings
 {
     public class DebitAccountSettings
     {
-        private double _commission;
+        private double _monthlycommission;
 
         public DebitAccountSettings(double commission)
         {
-            _commission = commission;
+            _monthlycommission = commission;
         }
 
         public double MonthlyPercentCommission(double currentAccountSum)
-            => _commission;
+            => _monthlycommission;
     }
 }

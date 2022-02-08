@@ -26,7 +26,7 @@ namespace Banks.Tools.ClientPart
         public string Address { get; set; }
 
         public bool IsApproved()
-            => !_isBlocked || !(string.IsNullOrEmpty(Passport) || string.IsNullOrEmpty(Address));
+            => !(_isBlocked || string.IsNullOrEmpty(Passport) || string.IsNullOrEmpty(Address));
 
         public AccountList ClientAccounts(AllAccounts allAccounts)
         {

@@ -1,6 +1,7 @@
 using System;
 using Banks.Tools;
 using Banks.Tools.Accounts;
+using Banks.Tools.Transactions;
 
 namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
 {
@@ -20,7 +21,7 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             shouldQuit = false;
             try
             {
-                string accountType = centralBank.Accounts.FindAccount(_id).Type();
+                AccountType accountType = centralBank.Accounts.FindAccount(_id).Type();
                 _userInterface.Write($"id: {_id}, "
                                      + $"account type: {accountType}, "
                                      + $"sum: {centralBank.Accounts.FindAccount(_id).Sum}. ");

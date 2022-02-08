@@ -56,12 +56,10 @@ namespace Banks.Tools.Accounts
 
         public override void WaitDay(uint currentDate)
         {
-            if (_accumulatedSum < 0) _accumulatedSum += _settings.MonthlyPercentCommission(Sum) / 30 * Sum;
-            if ((currentDate - _dateOfCreation) % 30 == 0)
-            {
-                Sum += _accumulatedSum;
-                _accumulatedSum = 0;
-            }
+            _accumulatedSum += _settings.MonthlyPercentCommission(Sum) / 30 * Sum;
+            if ((currentDate - _dateOfCreation) % 30 != 0) return;
+            Sum += _accumulatedSum;
+            _accumulatedSum = 0;
         }
 
         public override TransactionList AccountTransactions(AllTransactions allTransactions)
@@ -75,7 +73,7 @@ namespace Banks.Tools.Accounts
         public override bool IsClientId(uint id)
             => _client.Id == id;
 
-        public override string Type()
-            => "debit";
+        public override AccountType Type()
+            => AccountType.Debit;
     }
 }
