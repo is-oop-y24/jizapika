@@ -4,11 +4,11 @@ using BackupsExtra.Exceptions;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm
 {
-    public class ClearingAlgorithmByNumberOfRestorePoints : IClearingAlgorithm
+    public class SelectingAlgorithmByNumberOfRestorePoints : ISelectingAlgorithm
     {
         private uint _quantityOfRestorePoint;
 
-        public ClearingAlgorithmByNumberOfRestorePoints(uint quantityOfRestorePoint)
+        public SelectingAlgorithmByNumberOfRestorePoints(uint quantityOfRestorePoint)
         {
             _quantityOfRestorePoint = quantityOfRestorePoint;
             if (_quantityOfRestorePoint == 0) throw new BackUpsExtraExceptions("The algorithm wants to delete all restore points.");

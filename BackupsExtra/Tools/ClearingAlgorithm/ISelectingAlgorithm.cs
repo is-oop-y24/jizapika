@@ -3,7 +3,7 @@ using Backups.Tools.BackUpClasses;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm
 {
-    public interface IClearingAlgorithm
+    public interface ISelectingAlgorithm
     {
         public List<RestorePoint> GetRestorePointsForClearing(List<RestorePoint> restorePointList);
     }

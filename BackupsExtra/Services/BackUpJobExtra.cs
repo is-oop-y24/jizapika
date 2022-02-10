@@ -9,12 +9,12 @@ namespace BackupsExtra.Services
 {
     public class BackUpJobExtra : BackUpJob
     {
-        private IClearingAlgorithm _clearingAlgorithm;
+        private ISelectingAlgorithm _selectingAlgorithm;
         private JobObjects _jobObjects;
-        public BackUpJobExtra(IRepository repository, IStorageAlgorithm storageAlgorithm, IClearingAlgorithm clearingAlgorithm, string backUpName)
+        public BackUpJobExtra(IRepository repository, IStorageAlgorithm storageAlgorithm, ISelectingAlgorithm selectingAlgorithm, string backUpName)
             : base(repository, storageAlgorithm, backUpName)
         {
-            _clearingAlgorithm = clearingAlgorithm;
+            _selectingAlgorithm = selectingAlgorithm;
             _jobObjects = new JobObjects();
         }
     }
