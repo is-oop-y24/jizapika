@@ -6,13 +6,14 @@ namespace IsuExtra.Tools
     public class GroupNameExtra : GroupName
     {
         public GroupNameExtra(
-            MegaFacultyType megaFacultyType,
+            char megaFacultyType,
             int course,
             uint number,
             int minCourseNum = 1,
             int maxCourseNum = 9)
             : base(course, number, minCourseNum, maxCourseNum)
         {
+            MegaFacultyLetter = megaFacultyType;
         }
 
         public GroupNameExtra(string name, int minCourseNum = 1, int maxCourseNum = 9)
@@ -20,6 +21,6 @@ namespace IsuExtra.Tools
         {
         }
 
-        public MegaFacultyType MegaFacultyLetter { get; }
+        public char MegaFacultyLetter { get; }
     }
 }

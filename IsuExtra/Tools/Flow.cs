@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using IsuExtra.Exceptions;
 using IsuExtra.Tools.Timetable;
 
 namespace IsuExtra.Tools
@@ -25,9 +26,15 @@ namespace IsuExtra.Tools
         {
             foreach (Pair currentPair in Pairs)
             {
-                if (currentPair)
+                if (currentPair.IsCrossWithOtherPair(pair)) throw new IsuExtraException($"Not correct timetable.");
             }
+
             Pairs.Add(pair);
+        }
+
+        private bool IsTimetableNotCross()
+        {
+            
         }
     }
 }
