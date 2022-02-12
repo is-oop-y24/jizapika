@@ -9,5 +9,8 @@ namespace IsuExtra.Tools.Timetable
             _dayOfTimetable = dayOfTimetable;
             _pairNumber = pairNumber;
         }
+
+        public bool IsSameTime(Time time)
+            => time._dayOfTimetable == _dayOfTimetable && time._pairNumber == _pairNumber;
     }
 }

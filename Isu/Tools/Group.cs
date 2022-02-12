@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using Isu.Exceptions;
 
 namespace Isu.Tools
 {

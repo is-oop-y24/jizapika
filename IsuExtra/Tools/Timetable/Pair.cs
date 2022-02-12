@@ -16,5 +16,7 @@ namespace IsuExtra.Tools.Timetable
             _teacher = teacher;
             _auditory = auditory;
         }
+
+        public bool IsCrossWithOtherPair(Pair pair) => pair._time == _time;
     }
 }

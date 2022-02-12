@@ -1,4 +1,5 @@
 using Isu.Tools;
+using IsuExtra.Tools.MegaFacultyDirectory;
 
 namespace IsuExtra.Tools
 {
@@ -9,6 +10,7 @@ namespace IsuExtra.Tools
         public StudentExtra(string name, GroupName groupName, MegaFaculty megaFaculty)
             : base(name, groupName)
         {
+            _megaFaculty = megaFaculty;
         }
     }
 }

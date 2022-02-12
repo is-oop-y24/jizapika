@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using Isu.Exceptions;
 
 namespace Isu.Tools
 {

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using Isu.Exceptions;
 using Isu.Tools;
 
 namespace Isu.Services
