@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Isu.Tools;
 
@@ -9,10 +7,15 @@ namespace Isu.Services
     public class IsuService : IIsuService
     {
         private int _idSt = 1;
-        private List<Group> _grData = new List<Group>();
+        private List<Group> _grData;
         private uint _maxSt = 30;
         private int _maxNumCourse = 9;
         private int _minNumCourse = 1;
+
+        public IsuService()
+        {
+            _grData = new List<Group>();
+        }
 
         public Group AddGroup(string name)
         {

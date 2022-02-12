@@ -37,12 +37,6 @@ namespace Isu.Tools
             }
         }
 
-        public void ChangeNumber(uint number)
-        {
-            _name = new StringBuilder("M3" + Convert.ToString((_course.Get_num() * 100) + number));
-            _number = number;
-        }
-
         public StringBuilder GetName()
         {
             return _name;
