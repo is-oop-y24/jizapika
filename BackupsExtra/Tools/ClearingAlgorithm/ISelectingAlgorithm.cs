@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Backups.Tools.BackUpClasses;
+using BackupsExtra.Tools.BackUpExtraClasses;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm
 {
     public interface ISelectingAlgorithm
     {
-        public List<RestorePoint> GetRestorePointsForClearing(List<RestorePoint> restorePointList);
+        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList);
     }
 }

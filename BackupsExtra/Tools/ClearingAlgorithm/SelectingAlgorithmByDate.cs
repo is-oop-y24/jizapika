@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Backups.Tools.BackUpClasses;
 using BackupsExtra.Exceptions;
+using BackupsExtra.Tools.BackUpExtraClasses;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm
 {
@@ -14,18 +15,18 @@ namespace BackupsExtra.Tools.ClearingAlgorithm
             _lastDate = lastDate;
         }
 
-        public List<RestorePoint> GetRestorePointsForClearing(List<RestorePoint> restorePointList)
+        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
         {
-            var restorePointsForClearing = new List<RestorePoint>();
-            foreach (RestorePoint restorePoint in restorePointList)
+            var restorePointExtrasForClearing = new List<RestorePointExtra>();
+            foreach (RestorePointExtra restorePointExtra in restorePointExtraList)
             {
-                if (restorePoint.Time > _lastDate) break;
-                restorePointsForClearing.Add(restorePoint);
+                if (restorePointExtra.Time > _lastDate) break;
+                restorePointExtrasForClearing.Add(restorePointExtra);
             }
 
-            if (restorePointsForClearing.Count == restorePointList.Count)
+            if (restorePointExtrasForClearing.Count == restorePointExtraList.Count)
                 throw new BackUpsExtraExceptions("The algorithm wants to delete all restore points.");
-            return restorePointsForClearing;
+            return restorePointExtrasForClearing;
         }
     }
 }

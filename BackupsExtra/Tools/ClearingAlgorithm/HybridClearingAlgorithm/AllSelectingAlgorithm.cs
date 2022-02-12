@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Backups.Tools.BackUpClasses;
-using BackupsExtra.Exceptions;
+using BackupsExtra.Tools.BackUpExtraClasses;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
 {
@@ -16,12 +15,14 @@ namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
             _lastDate = lastDate;
         }
 
-        public List<RestorePoint> GetRestorePointsForClearing(List<RestorePoint> restorePointList)
+        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
         {
             var clearingAlgorithmByNumberOfRestorePoints = new SelectingAlgorithmByNumberOfRestorePoints(_quantityOfRestorePoint);
             var clearingAlgorithmByDate = new SelectingAlgorithmByDate(_lastDate);
-            List<RestorePoint> restorePointsForClearingByNumberOfRestorePoints = clearingAlgorithmByNumberOfRestorePoints.GetRestorePointsForClearing(restorePointList);
-            return clearingAlgorithmByDate.GetRestorePointsForClearing(restorePointsForClearingByNumberOfRestorePoints);
+            List<RestorePointExtra> restorePointExtrasForClearingByNumberOfRestorePoints
+                = clearingAlgorithmByNumberOfRestorePoints.GetRestorePointExtrasForClearing(restorePointExtraList);
+            return clearingAlgorithmByDate.GetRestorePointExtrasForClearing(
+                restorePointExtrasForClearingByNumberOfRestorePoints);
         }
     }
 }

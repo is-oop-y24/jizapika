@@ -1,5 +1,6 @@
-using Backups.Tools.BackUpClasses;
+using System.Collections.Generic;
 using BackupsExtra.Tools.BackUpExtraClasses;
+using BackupsExtra.Tools.ClearingAlgorithm;
 using BackupsExtra.Tools.RepositoryExtra;
 
 namespace BackupsExtra.Tools.MergerClass
@@ -7,22 +8,20 @@ namespace BackupsExtra.Tools.MergerClass
     public class Merger
     {
         private IRepositoryExtra _repositoryExtra;
+
         public Merger(IRepositoryExtra repositoryExtra)
         {
             _repositoryExtra = repositoryExtra;
         }
 
-        public void MergeTwoRestorePoints(RestorePointExtra oldRestorePointExtra, RestorePointExtra newRestorePointExtra)
+        public void MergeRestorePointExtras(ISelectingAlgorithm selectingAlgorithm, BackUpExtra backUpExtra)
         {
-            foreach (StorageExtra oldStorageExtra in oldRestorePointExtra.Storages)
+            List<RestorePointExtra> selectingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(backUpExtra.RestorePointExtraList);
+            for (int index = 1; index < selectingRestorePointExtras.Count; index++)
             {
-                foreach (StorageExtra newStorageExtra in newRestorePointExtra.Storages)
-                {
-                    if (oldStorageExtra.GetId() == newStorageExtra.GetId())
-                    {
-                        _repositoryExtra.DeleteStorageExtra(oldStorageExtra);
-                    }
-                }
+                _repositoryExtra.MergeTwoRestorePointExtras(
+                    selectingRestorePointExtras[index - 1],
+                    selectingRestorePointExtras[index]);
             }
         }
     }

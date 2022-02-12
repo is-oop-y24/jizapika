@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Backups.Tools.BackUpClasses;
 using BackupsExtra.Exceptions;
+using BackupsExtra.Tools.BackUpExtraClasses;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
 {
@@ -17,19 +17,19 @@ namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
             _lastDate = lastDate;
         }
 
-        public List<RestorePoint> GetRestorePointsForClearing(List<RestorePoint> restorePointList)
+        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
         {
-            var restorePointsForClearing = new List<RestorePoint>();
-            if (restorePointList.Count <= _quantityOfRestorePoint) return restorePointsForClearing;
-            foreach (RestorePoint restorePoint in restorePointList)
+            var restorePointExtrasForClearing = new List<RestorePointExtra>();
+            if (restorePointExtraList.Count <= _quantityOfRestorePoint) return restorePointExtrasForClearing;
+            foreach (RestorePointExtra restorePointExtra in restorePointExtraList)
             {
-                restorePointsForClearing.Add(restorePoint);
-                if (restorePointsForClearing.Count == restorePointList.Count - restorePointsForClearing.Count || restorePoint.Time > _lastDate) break;
+                restorePointExtrasForClearing.Add(restorePointExtra);
+                if (restorePointExtrasForClearing.Count == restorePointExtraList.Count - restorePointExtrasForClearing.Count || restorePointExtra.Time > _lastDate) break;
             }
 
-            if (restorePointsForClearing.Count == restorePointList.Count)
+            if (restorePointExtrasForClearing.Count == restorePointExtraList.Count)
                 throw new BackUpsExtraExceptions("The algorithm wants to delete all restore points.");
-            return restorePointsForClearing;
+            return restorePointExtrasForClearing;
         }
     }
 }
