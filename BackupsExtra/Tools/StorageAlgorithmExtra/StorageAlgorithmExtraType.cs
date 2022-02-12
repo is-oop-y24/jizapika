@@ -1,8 +1,12 @@
 ﻿namespace BackupsExtra.Tools.StorageAlgorithmExtra
 {
+    /// <summary> StorageAlgorithmExtraType. </summary>
     public enum StorageAlgorithmExtraType
     {
-        Single,
-        Split,
+        /// <summary> SingleType </summary>
+        SingleType,
+
+        /// <summary> SplitType </summary>
+        SplitType,
     }
 }

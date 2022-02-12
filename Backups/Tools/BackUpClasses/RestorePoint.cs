@@ -21,8 +21,8 @@ namespace Backups.Tools.BackUpClasses
             Time = DateTime.UtcNow;
         }
 
-        public uint Id { get; }
-        public DateTime Time { get; }
-        public List<Storage> Storages { get; }
+        public uint Id { get; protected set; }
+        public DateTime Time { get; protected set; }
+        public List<Storage> Storages { get; protected set; }
     }
 }
