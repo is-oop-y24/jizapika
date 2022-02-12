@@ -10,21 +10,21 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
 {
     public class BackUpExtra : BackUp
     {
-        public uint _restorePointExtraQuantity;
+        private uint _restorePointExtraQuantity;
 
         public BackUpExtra(string name)
             : base(name)
         {
             _restorePointExtraQuantity = 1;
-            RestorePointExtraList = new List<RestorePointExtra>();
+            LinkedRestorePointExtraList = new LinkedList<RestorePointExtra>();
         }
 
-        public List<RestorePointExtra> RestorePointExtraList { get; }
+        public LinkedList<RestorePointExtra> LinkedRestorePointExtraList { get; }
 
         public RestorePointExtra MakeRestorePointExtra(JobObjects jobObjects, IRepositoryExtra repositoryExtra, IStorageAlgorithmExtra algorithmExtra)
         {
             var restorePointExtra = new RestorePointExtra(jobObjects, algorithmExtra, _restorePointExtraQuantity, repositoryExtra, Name);
-            RestorePointExtraList.Add(restorePointExtra);
+            LinkedRestorePointExtraList.AddLast(restorePointExtra);
             _restorePointExtraQuantity++;
             return restorePointExtra;
         }

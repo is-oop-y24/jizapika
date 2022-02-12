@@ -7,23 +7,23 @@ namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
 {
     public class LeastOneSelectingAlgorithm : ISelectingAlgorithm
     {
-        private uint _quantityOfRestorePoint;
+        private uint _quantityOfRestorePointExtra;
         private DateTime _lastDate;
 
-        public LeastOneSelectingAlgorithm(uint quantityOfRestorePoint, DateTime lastDate)
+        public LeastOneSelectingAlgorithm(uint quantityOfRestorePointExtra, DateTime lastDate)
         {
-            _quantityOfRestorePoint = quantityOfRestorePoint;
-            if (_quantityOfRestorePoint == 0) throw new BackUpsExtraExceptions("The algorithm wants to delete all restore points.");
+            _quantityOfRestorePointExtra = quantityOfRestorePointExtra;
+            if (_quantityOfRestorePointExtra == 0) throw new BackUpsExtraExceptions("The algorithm wants to delete all restore points.");
             _lastDate = lastDate;
         }
 
-        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
+        public LinkedList<RestorePointExtra> GetRestorePointExtrasForClearing(LinkedList<RestorePointExtra> restorePointExtraList)
         {
-            var restorePointExtrasForClearing = new List<RestorePointExtra>();
-            if (restorePointExtraList.Count <= _quantityOfRestorePoint) return restorePointExtrasForClearing;
+            var restorePointExtrasForClearing = new LinkedList<RestorePointExtra>();
+            if (restorePointExtraList.Count <= _quantityOfRestorePointExtra) return restorePointExtrasForClearing;
             foreach (RestorePointExtra restorePointExtra in restorePointExtraList)
             {
-                restorePointExtrasForClearing.Add(restorePointExtra);
+                restorePointExtrasForClearing.AddLast(restorePointExtra);
                 if (restorePointExtrasForClearing.Count == restorePointExtraList.Count - restorePointExtrasForClearing.Count || restorePointExtra.Time > _lastDate) break;
             }
 

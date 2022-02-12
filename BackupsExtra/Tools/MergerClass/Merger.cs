@@ -16,13 +16,8 @@ namespace BackupsExtra.Tools.MergerClass
 
         public void MergeRestorePointExtras(ISelectingAlgorithm selectingAlgorithm, BackUpExtra backUpExtra)
         {
-            List<RestorePointExtra> selectingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(backUpExtra.RestorePointExtraList);
-            for (int index = 1; index < selectingRestorePointExtras.Count; index++)
-            {
-                _repositoryExtra.MergeTwoRestorePointExtras(
-                    selectingRestorePointExtras[index - 1],
-                    selectingRestorePointExtras[index]);
-            }
+            LinkedList<RestorePointExtra> selectingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(backUpExtra.LinkedRestorePointExtraList);
+            
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Backups.Tools.BackUpClasses;
 using Backups.Tools.JobObjectsClasses;
 using Backups.Tools.Repository;
@@ -8,6 +9,24 @@ namespace BackupsExtra.Tools.RepositoryExtra
 {
     public class AbstractFileSystemExtra : AbstractFileSystem, IRepositoryExtra
     {
+        public List<Storage> UnCompressingObjectsToOriginalLocation(
+            Storage storage,
+            string backUpName,
+            string restorePointName,
+            string compressedName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<Storage> UnCompressingObjectsToDifferentLocation(
+            Storage storage,
+            string backUpName,
+            string restorePointName,
+            string compressedName)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<StorageExtra> UnCompressingObjectsToOriginalLocation(
             StorageExtra storageExtra,
             string backUpExtraName,
@@ -37,9 +56,7 @@ namespace BackupsExtra.Tools.RepositoryExtra
         }
 
         public StorageExtra CopyStorageExtra(StorageExtra storageExtra)
-        {
-            throw new System.NotImplementedException();
-        }
+            => 
 
         public void MergeTwoRestorePointExtras(
             RestorePointExtra oldRestorePointExtra,
@@ -63,6 +80,8 @@ namespace BackupsExtra.Tools.RepositoryExtra
                 if (flag)
                 {
                     StorageExtra storageExtra = CopyStorageExtra(oldStorageExtra);
+                    oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
+                    newRestorePointExtra.StoragesExtra.Add(storageExtra);
                 }
             }
         }

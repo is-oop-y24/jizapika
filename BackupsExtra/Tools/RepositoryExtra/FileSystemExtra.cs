@@ -13,6 +13,24 @@ namespace BackupsExtra.Tools.RepositoryExtra
         {
         }
 
+        public List<Storage> UnCompressingObjectsToOriginalLocation(
+            Storage storage,
+            string backUpName,
+            string restorePointName,
+            string compressedName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<Storage> UnCompressingObjectsToDifferentLocation(
+            Storage storage,
+            string backUpName,
+            string restorePointName,
+            string compressedName)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<StorageExtra> UnCompressingObjectsToOriginalLocation(
             StorageExtra storageExtra,
             string backUpExtraName,
@@ -52,25 +70,7 @@ namespace BackupsExtra.Tools.RepositoryExtra
             string backUpExtraName,
             string newRestorePointExtraName)
         {
-            foreach (StorageExtra oldStorageExtra in oldRestorePointExtra.StoragesExtra)
-            {
-                bool flag = true;
-                foreach (StorageExtra newStorageExtra in newRestorePointExtra.StoragesExtra)
-                {
-                    if (oldStorageExtra.GetId() == newStorageExtra.GetId())
-                    {
-                        DeleteStorageExtraFromRepository(oldStorageExtra);
-                        oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
-                        flag = false;
-                        break;
-                    }
-                }
-
-                if (flag)
-                {
-                    StorageExtra storageExtra = CopyStorageExtra(oldStorageExtra);
-                }
-            }
+            throw new System.NotImplementedException();
         }
     }
 }

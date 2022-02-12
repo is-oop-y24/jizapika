@@ -6,20 +6,20 @@ namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
 {
     public class AllSelectingAlgorithm : ISelectingAlgorithm
     {
-        private uint _quantityOfRestorePoint;
+        private uint _quantityOfRestorePointExtra;
         private DateTime _lastDate;
 
-        public AllSelectingAlgorithm(uint quantityOfRestorePoint, DateTime lastDate)
+        public AllSelectingAlgorithm(uint quantityOfRestorePointExtra, DateTime lastDate)
         {
-            _quantityOfRestorePoint = quantityOfRestorePoint;
+            _quantityOfRestorePointExtra = quantityOfRestorePointExtra;
             _lastDate = lastDate;
         }
 
-        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
+        public LinkedList<RestorePointExtra> GetRestorePointExtrasForClearing(LinkedList<RestorePointExtra> restorePointExtraList)
         {
-            var clearingAlgorithmByNumberOfRestorePoints = new SelectingAlgorithmByNumberOfRestorePoints(_quantityOfRestorePoint);
+            var clearingAlgorithmByNumberOfRestorePoints = new SelectingAlgorithmByNumberOfRestorePoints(_quantityOfRestorePointExtra);
             var clearingAlgorithmByDate = new SelectingAlgorithmByDate(_lastDate);
-            List<RestorePointExtra> restorePointExtrasForClearingByNumberOfRestorePoints
+            LinkedList<RestorePointExtra> restorePointExtrasForClearingByNumberOfRestorePoints
                 = clearingAlgorithmByNumberOfRestorePoints.GetRestorePointExtrasForClearing(restorePointExtraList);
             return clearingAlgorithmByDate.GetRestorePointExtrasForClearing(
                 restorePointExtrasForClearingByNumberOfRestorePoints);

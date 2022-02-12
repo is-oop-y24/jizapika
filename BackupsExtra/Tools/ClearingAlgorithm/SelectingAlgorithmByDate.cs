@@ -15,13 +15,13 @@ namespace BackupsExtra.Tools.ClearingAlgorithm
             _lastDate = lastDate;
         }
 
-        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
+        public LinkedList<RestorePointExtra> GetRestorePointExtrasForClearing(LinkedList<RestorePointExtra> restorePointExtraList)
         {
-            var restorePointExtrasForClearing = new List<RestorePointExtra>();
+            var restorePointExtrasForClearing = new LinkedList<RestorePointExtra>();
             foreach (RestorePointExtra restorePointExtra in restorePointExtraList)
             {
                 if (restorePointExtra.Time > _lastDate) break;
-                restorePointExtrasForClearing.Add(restorePointExtra);
+                restorePointExtrasForClearing.AddLast(restorePointExtra);
             }
 
             if (restorePointExtrasForClearing.Count == restorePointExtraList.Count)
