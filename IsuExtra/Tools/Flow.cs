@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using IsuExtra.Exceptions;
 using IsuExtra.Tools.Timetable;
 
@@ -6,35 +8,53 @@ namespace IsuExtra.Tools
 {
     public class Flow
     {
+        private List<Pair> _pairs;
+        private List<StudentExtra> _students;
         public Flow(uint maxStudents)
         {
-            Pairs = new List<Pair>();
+            _pairs = new List<Pair>();
             MaxStudents = maxStudents;
-            Students = new List<StudentExtra>();
+            _students = new List<StudentExtra>();
         }
 
-        public List<Pair> Pairs { get; }
-        public List<StudentExtra> Students { get; }
+        public ImmutableList<Pair> ImmutablePairs => _pairs.ToImmutableList();
+        public ImmutableList<StudentExtra> ImmutableStudents => _students.ToImmutableList();
         public uint MaxStudents { get; }
 
         public void AddStudent(StudentExtra student)
         {
-            Students.Add(student);
+            if (!HasFreePlaces()) throw new IsuExtraException("The flow hasn't free places.");
+            _students.Add(student);
         }
 
         public void AddPair(Pair pair)
         {
-            foreach (Pair currentPair in Pairs)
+            if (_pairs.Any(currentPair => currentPair.IsCrossWithOtherPair(pair)))
+                throw new IsuExtraException($"Not correct timetable.");
+
+            _pairs.Add(pair);
+            if (!IsPairNotCross())
             {
-                if (currentPair.IsCrossWithOtherPair(pair)) throw new IsuExtraException($"Not correct timetable.");
+                _pairs.Remove(pair);
+                throw new IsuExtraException("Pair can't add.");
             }
-
-            Pairs.Add(pair);
         }
 
-        private bool IsTimetableNotCross()
+        public bool HasFreePlaces()
+            => MaxStudents != _students.Count;
+
+        public bool HasStudent(StudentExtra student)
+            => _students.Contains(student);
+
+        public void RemoveStudent(StudentExtra student)
         {
-            
+            if (HasStudent(student))
+                _students.Remove(student);
+            else
+                throw new IsuExtraException("The flow hasn't student.");
         }
+
+        private bool IsPairNotCross()
+            => _pairs.All(pair1 => !_pairs.Any(pair2 => !pair1.IsIdsTheSame(pair2) && pair1.IsCrossWithOtherPair(pair2)));
     }
 }
