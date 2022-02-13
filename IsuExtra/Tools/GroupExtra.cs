@@ -11,7 +11,7 @@ namespace IsuExtra.Tools
         private List<StudentExtra> _students;
         private List<Pair> _timetable;
 
-        public GroupExtra(GroupNameExtra groupName, List<Student> students, uint maxStudent, char megaFacultyLetter)
+        public GroupExtra(GroupNameExtra groupName, List<StudentExtra> students, uint maxStudent, char megaFacultyLetter)
             : base(groupName, students, maxStudent)
         {
             _students = new List<StudentExtra>();
@@ -23,6 +23,7 @@ namespace IsuExtra.Tools
         public GroupNameExtra GroupName { get; }
 
         public ImmutableList<StudentExtra> ImmutableStudents => _students.ToImmutableList();
+        public ImmutableList<Pair> ImmutableTimeTable => _timetable.ToImmutableList();
         public char MegaFacultyLetter { get; }
 
         public bool CanAddPair(Time time)

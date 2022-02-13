@@ -7,20 +7,24 @@ namespace Isu.Services
 {
     public class IsuService : IIsuService
     {
-        private uint _idSt = 1;
         private List<Group> _grData;
-        private uint _maxSt = 30;
-        private int _maxNumCourse = 9;
-        private int _minNumCourse = 1;
-
         public IsuService()
         {
             _grData = new List<Group>();
+            MaxSt = 30;
+            MaxNumCourse = 9;
+            MinNumCourse = 1;
+            IdSt = 1;
         }
+
+        protected uint MaxSt { get; set; }
+        protected int MaxNumCourse { get; set; }
+        protected int MinNumCourse { get; set; }
+        protected uint IdSt { get; set; }
 
         public Group AddGroup(string name)
         {
-            var newGr = new Group(new GroupName(name, _minNumCourse, _maxNumCourse), new List<Student>(), _maxSt);
+            var newGr = new Group(new GroupName(name, MinNumCourse, MaxNumCourse), new List<Student>(), MaxSt);
             _grData.Add(newGr);
             return newGr;
         }
@@ -31,7 +35,7 @@ namespace Isu.Services
             {
                 if (cur.Name() == group.Name() && group.CanAddThisStudent(name))
                 {
-                    var student = new Student(name, group.Name(), _idSt);
+                    var student = new Student(name, group.Name(), IdSt);
                     group.AddStudent(student);
                     return student;
                 }
@@ -133,7 +137,7 @@ namespace Isu.Services
                         groupName = curGr.Name();
                         stData.Remove(curSt);
                         _grData.Remove(curGr);
-                        _grData.Add(new Group(groupName, stData, _maxSt));
+                        _grData.Add(new Group(groupName, stData, MaxSt));
                         return;
                     }
                 }
@@ -150,15 +154,15 @@ namespace Isu.Services
 
         public void Change_maxSt(uint newMaxSt)
         {
-            _maxSt = newMaxSt;
+            MaxSt = newMaxSt;
         }
 
         public void NewCourseLimit(int newMin, int newMax)
         {
             if (newMin < 1) throw new IsuException($"Наименьшее значение курса не может быть {newMin}");
             if (newMin > 9) throw new IsuException($"Наибольшее значение курса не может быть {newMax}");
-            _maxNumCourse = newMax;
-            _minNumCourse = newMin;
+            MaxNumCourse = newMax;
+            MinNumCourse = newMin;
             foreach (var curGr in _grData)
             {
                 var course = new CourseNumber(curGr.Name().Course(), newMin, newMax);

@@ -33,28 +33,9 @@ namespace Isu.Tools
             return _stData.Count != _maxSt;
         }
 
-        public void KickStudent(Student newSt)
-        {
-            foreach (Student curSt in _stData)
-            {
-                if (curSt.GetName() == newSt.GetName())
-                {
-                    _stData.Remove(newSt);
-                    return;
-                }
-            }
-
-            throw new IsuException($"Студент {newSt.GetName()} не приписан к группе {_groupname.GetName()}.");
-        }
-
         public List<Student> Get_stData()
         {
             return _stData;
-        }
-
-        public void Set_stData(List<Student> newStData)
-        {
-            _stData = newStData;
         }
 
         public GroupName Name()
@@ -64,13 +45,6 @@ namespace Isu.Tools
 
         public void ChangeCourseNumber(CourseNumber course)
         {
-            _groupname.ChangeCourseNumber(course);
-        }
-
-        public void CourseUp()
-        {
-            CourseNumber course = _groupname.GetCourseNumber();
-            course++;
             _groupname.ChangeCourseNumber(course);
         }
     }
