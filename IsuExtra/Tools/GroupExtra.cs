@@ -12,7 +12,7 @@ namespace IsuExtra.Tools
         private List<Pair> _timetable;
 
         public GroupExtra(GroupNameExtra groupName, List<StudentExtra> students, uint maxStudent, char megaFacultyLetter)
-            : base(groupName, students, maxStudent)
+            : base(groupName, new List<Student>(students), maxStudent)
         {
             _students = new List<StudentExtra>();
             MegaFacultyLetter = megaFacultyLetter;

@@ -13,7 +13,7 @@ namespace IsuExtra.Tools
         private List<CourseOGNP> _coursesOGNP;
         private uint _maxCoursesOGNP;
 
-        public StudentExtra(string name, GroupName groupName, char megaFacultyLetter, List<Pair> timetable, uint id, uint maxCoursesOGNP)
+        public StudentExtra(string name, GroupNameExtra groupName, char megaFacultyLetter, List<Pair> timetable, uint id, uint maxCoursesOGNP)
             : base(name, groupName, id)
         {
             _megaFacultyLetter = megaFacultyLetter;

@@ -7,35 +7,35 @@ namespace Isu.Tools
     public class Group
     {
         private GroupName _groupname;
-        private List<Student> _stData;
+        private List<Student> _students;
         private uint _maxSt;
         public Group(GroupName groupname, List<Student> stData, uint maxSt = 30)
         {
-            if (_stData != null && _stData.Count > maxSt) throw new IsuException($"Группу с таким количеством студентов создать невозможно!");
+            if (_students != null && _students.Count > maxSt) throw new IsuException($"Группу с таким количеством студентов создать невозможно!");
             _maxSt = maxSt;
             _groupname = groupname;
-            _stData = stData;
+            _students = stData;
         }
 
         public void AddStudent(Student student)
         {
-            _stData.Add(student);
+            _students.Add(student);
         }
 
         public bool CanAddThisStudent(string studentName)
         {
-            foreach (Student curSt in _stData)
+            foreach (Student curSt in _students)
             {
                 if (curSt.GetName() == studentName)
                     return false;
             }
 
-            return _stData.Count != _maxSt;
+            return _students.Count != _maxSt;
         }
 
         public List<Student> Get_stData()
         {
-            return _stData;
+            return _students;
         }
 
         public GroupName Name()

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using Isu.Exceptions;
 using Isu.Services;
 using Isu.Tools;
@@ -83,11 +82,11 @@ namespace IsuExtra.Services
             }
 
             throw new IsuExtraException("Pair can't add.");
-        }=
+        }
 
         public GroupExtra AddGroup(string name, MegaFaculty megaFaculty)
         {
-            var newGr = new GroupExtra(new GroupNameExtra(name, MinNumCourse, MaxNumCourse), new List<Student>(), MaxSt, megaFaculty.MegaFacultyLetter);
+            var newGr = new GroupExtra(new GroupNameExtra(name, MinNumCourse, MaxNumCourse), new List<StudentExtra>(), MaxSt, megaFaculty.MegaFacultyLetter);
             _groupsExtra.Add(newGr);
             return newGr;
         }
@@ -188,9 +187,10 @@ namespace IsuExtra.Services
                         stData = curGr.ImmutableStudents.ToList();
                         var groupName = new GroupNameExtra(
                             curGr.GroupName.GetName().ToString(), MinNumCourse, MaxNumCourse);
+                        char megaFaculty = curGr.MegaFacultyLetter;
                         stData.Remove(curSt);
                         _groupsExtra.Remove(curGr);
-                        _groupsExtra.Add(new GroupExtra(groupName, stData, MaxSt));
+                        _groupsExtra.Add(new GroupExtra(groupName, stData, MaxSt, megaFaculty));
                         return;
                     }
                 }
