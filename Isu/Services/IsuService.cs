@@ -7,7 +7,7 @@ namespace Isu.Services
 {
     public class IsuService : IIsuService
     {
-        private int _idSt = 1;
+        private uint _idSt = 1;
         private List<Group> _grData;
         private uint _maxSt = 30;
         private int _maxNumCourse = 9;
@@ -27,18 +27,17 @@ namespace Isu.Services
 
         public Student AddStudent(Group group, string name)
         {
-            int grNum = -1;
-            int curPos = 0;
             foreach (Group cur in _grData)
             {
-                if (cur.Name() == group.Name()) grNum = curPos;
-                curPos++;
+                if (cur.Name() == group.Name() && group.CanAddThisStudent(name))
+                {
+                    var student = new Student(name, group.Name(), _idSt);
+                    group.AddStudent(student);
+                    return student;
+                }
             }
 
-            if (grNum == -1) throw new IsuException($"Группы {group.Name()} не существует.");
-            var st = _grData[grNum].AddStudent(name, _idSt);
-            _idSt++;
-            return st;
+            throw new IsuException($"Студент не может быть добавлен.");
         }
 
         public Student GetStudent(int id)
@@ -145,9 +144,8 @@ namespace Isu.Services
 
         public void ChangeStudentGroup(Student student, Group newGroup)
         {
-            int idSt = student.Get_id();
             KickStudent(student);
-            newGroup.AddStudent(student.GetName(), idSt);
+            AddStudent(newGroup, student.GetName());
         }
 
         public void Change_maxSt(uint newMaxSt)

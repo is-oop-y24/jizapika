@@ -17,25 +17,20 @@ namespace Isu.Tools
             _stData = stData;
         }
 
-        public Student AddStudent(string nameNewSt, int idSt)
+        public void AddStudent(Student student)
         {
-            var newSt = new Student(nameNewSt, _groupname);
+            _stData.Add(student);
+        }
+
+        public bool CanAddThisStudent(string studentName)
+        {
             foreach (Student curSt in _stData)
             {
-                if (curSt.GetName() == nameNewSt)
-                {
-                    throw new IsuException($"Студент {newSt.GetName()} уже значится в группе {_groupname.GetName()}.");
-                }
+                if (curSt.GetName() == studentName)
+                    return false;
             }
 
-            if (_stData.Count == _maxSt)
-            {
-                throw new IsuException($"В группе {_groupname.GetName()} уже слишком много студентов. Студент {newSt.GetName()} не был добавлен.");
-            }
-
-            newSt.Assign_id(idSt);
-            _stData.Add(newSt);
-            return newSt;
+            return _stData.Count != _maxSt;
         }
 
         public void KickStudent(Student newSt)

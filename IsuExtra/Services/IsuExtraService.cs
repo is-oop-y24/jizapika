@@ -2,19 +2,23 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Isu.Services;
+using Isu.Tools;
 using IsuExtra.Exceptions;
 using IsuExtra.Tools;
 using IsuExtra.Tools.MegaFacultyDirectory;
+using IsuExtra.Tools.Timetable;
 
 namespace IsuExtra.Services
 {
     public class IsuExtraService : IsuService, IIsuExtraService
     {
         private List<MegaFaculty> _megaFaculties;
+        private List<GroupExtra> _groupsExtra;
 
         public IsuExtraService()
         {
             _megaFaculties = new List<MegaFaculty>();
+            _groupsExtra = new List<GroupExtra>();
         }
 
         public ImmutableList<MegaFaculty> MegaFaculties => _megaFaculties.ToImmutableList();
@@ -43,6 +47,38 @@ namespace IsuExtra.Services
             if (courseOGNP.HasStudent(student))
                 courseOGNP.RemoveStudent(student);
             else throw new IsuExtraException("Student wasn't on this course.");
+        }
+
+        public ImmutableList<Flow> FlowsInACourseOGNP(CourseOGNP courseOGNP)
+            => courseOGNP.ImmutableFlows;
+
+        public ImmutableList<StudentExtra> StudentsInACourseOGNP(CourseOGNP courseOGNP)
+            => FlowsInACourseOGNP(courseOGNP).SelectMany(flow => flow.ImmutableStudents.ToList()).ToImmutableList();
+
+        public List<StudentExtra> StudentsWithoutCoursesOGNP(GroupExtra group)
+        {
+            var students = new List<StudentExtra>();
+            foreach (StudentExtra student in group.ImmutableStudents)
+            {
+                if (student.IsWithoutAllCoursesOGNP()) students.Add(student);
+            }
+
+            return students;
+        }
+
+        public Pair AddPairForGroup(GroupNameExtra groupNameExtra, Time time, string teacher, uint auditory)
+        {
+            foreach (GroupExtra group in _groupsExtra)
+            {
+                if (group.GroupName == groupNameExtra && group.CanAddPair(time))
+                {
+                    var pair = new Pair(groupNameExtra, time, teacher, auditory);
+                    group.AddPair(pair);
+                    return pair;
+                }
+            }
+
+            throw new IsuExtraException("Pair can't add.");
         }
     }
 }

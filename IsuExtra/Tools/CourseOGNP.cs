@@ -10,11 +10,13 @@ namespace IsuExtra.Tools
     public class CourseOGNP
     {
         private List<Flow> _flows;
+        private Guid _id;
         public CourseOGNP(uint flowSize, char megaFacultyLetter)
         {
             if (flowSize == 0) throw new IsuExtraException($"The flow can't be empty");
             _flows = new List<Flow>();
             MegaFacultyLetter = megaFacultyLetter;
+            _id = Guid.NewGuid();
         }
 
         public ImmutableList<Flow> ImmutableFlows => _flows.ToImmutableList();
@@ -53,5 +55,7 @@ namespace IsuExtra.Tools
 
             throw new IsuExtraException("OGNP course hasn't student.");
         }
+
+        public bool IsIdsTheSame(CourseOGNP course) => course._id == _id;
     }
 }
