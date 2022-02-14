@@ -8,14 +8,17 @@ namespace Isu.Tools
     {
         private GroupName _groupname;
         private List<Student> _students;
-        private uint _maxSt;
+
         public Group(GroupName groupname, List<Student> stData, uint maxSt = 30)
         {
-            if (_students != null && _students.Count > maxSt) throw new IsuException($"Группу с таким количеством студентов создать невозможно!");
-            _maxSt = maxSt;
+            if (_students != null && _students.Count > maxSt)
+                throw new IsuException($"Группу с таким количеством студентов создать невозможно!");
+            MaxSt = maxSt;
             _groupname = groupname;
             _students = stData;
         }
+
+        protected uint MaxSt { get; set; }
 
         public void AddStudent(Student student)
         {
@@ -30,7 +33,7 @@ namespace Isu.Tools
                     return false;
             }
 
-            return _students.Count != _maxSt;
+            return _students.Count != MaxSt;
         }
 
         public List<Student> Get_stData()

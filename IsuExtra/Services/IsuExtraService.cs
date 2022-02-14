@@ -86,7 +86,11 @@ namespace IsuExtra.Services
 
         public GroupExtra AddGroup(string name, MegaFaculty megaFaculty)
         {
-            var newGr = new GroupExtra(new GroupNameExtra(name, MinNumCourse, MaxNumCourse), new List<StudentExtra>(), MaxSt, megaFaculty.MegaFacultyLetter);
+            var newGr = new GroupExtra(
+                new GroupNameExtra(name, megaFaculty.MegaFacultyLetter, MinNumCourse, MaxNumCourse),
+                new List<StudentExtra>(),
+                MaxSt,
+                megaFaculty.MegaFacultyLetter);
             _groupsExtra.Add(newGr);
             return newGr;
         }
@@ -182,11 +186,11 @@ namespace IsuExtra.Services
             {
                 foreach (StudentExtra curSt in curGr.ImmutableStudents)
                 {
-                    if (curSt == student)
+                    if (curSt.Id == student.Id)
                     {
                         stData = curGr.ImmutableStudents.ToList();
                         var groupName = new GroupNameExtra(
-                            curGr.GroupName.GetName().ToString(), MinNumCourse, MaxNumCourse);
+                            curGr.GroupName.GetName().ToString(), curGr.MegaFacultyLetter, MinNumCourse, MaxNumCourse);
                         char megaFaculty = curGr.MegaFacultyLetter;
                         stData.Remove(curSt);
                         _groupsExtra.Remove(curGr);

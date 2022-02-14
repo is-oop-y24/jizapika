@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using Isu.Tools;
 using IsuExtra.Exceptions;
 using IsuExtra.Tools.MegaFacultyDirectory;
@@ -15,11 +17,13 @@ namespace IsuExtra.Tools
             : base(course, number, minCourseNum, maxCourseNum)
         {
             MegaFacultyLetter = megaFacultyLetter;
+            Name = new StringBuilder(megaFacultyLetter + "3" + Convert.ToString((course * 100) + number));
         }
 
-        public GroupNameExtra(string name, int minCourseNum = 1, int maxCourseNum = 9)
+        public GroupNameExtra(string name, char megaFacultyLetter, int minCourseNum = 1, int maxCourseNum = 9)
             : base(name, minCourseNum, maxCourseNum)
         {
+            MegaFacultyLetter = megaFacultyLetter;
             if (name[0] != MegaFacultyLetter) throw new IsuExtraException("Not correct groupName.");
         }
 

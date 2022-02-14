@@ -33,5 +33,21 @@ namespace IsuExtra.Tools
         {
             _timetable.Add(pair);
         }
+
+        public void AddStudent(StudentExtra student)
+        {
+            _students.Add(student);
+        }
+
+        public new bool CanAddThisStudent(string studentName)
+        {
+            foreach (Student curSt in _students)
+            {
+                if (curSt.GetName() == studentName)
+                    return false;
+            }
+
+            return _students.Count != MaxSt;
+        }
     }
 }
