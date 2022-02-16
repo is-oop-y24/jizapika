@@ -4,9 +4,9 @@ using BackupsExtra.Tools.BackUpExtraClasses;
 using BackupsExtra.Tools.ClearingAlgorithm;
 using BackupsExtra.Tools.RepositoryExtra;
 
-namespace BackupsExtra.Tools.MergerClass
+namespace BackupsExtra.Tools.ClearerClass
 {
-    public class Merger
+    public class Merger : IClearer
     {
         private IRepositoryExtra _repositoryExtra;
 
@@ -15,7 +15,7 @@ namespace BackupsExtra.Tools.MergerClass
             _repositoryExtra = repositoryExtra;
         }
 
-        public void MergeRestoresPointExtra(
+        public void ClearRestoresPointExtra(
         ISelectingAlgorithm selectingAlgorithm,
         BackUpExtra backUpExtra,
         bool isSplitAlgorithm)
