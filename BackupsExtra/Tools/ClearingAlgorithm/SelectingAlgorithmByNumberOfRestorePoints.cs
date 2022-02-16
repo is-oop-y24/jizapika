@@ -11,20 +11,31 @@ namespace BackupsExtra.Tools.ClearingAlgorithm
         public SelectingAlgorithmByNumberOfRestorePoints(uint quantityOfRestorePoint)
         {
             _quantityOfRestorePointExtra = quantityOfRestorePoint;
-            if (_quantityOfRestorePointExtra == 0) throw new BackUpsExtraExceptions("The algorithm wants to delete all restore points.");
+            if (_quantityOfRestorePointExtra == 0) throw new BackUpsExtraExceptions("The algorithm wants to clear all restore points.");
         }
 
-        public LinkedList<RestorePointExtra> GetRestorePointExtrasForClearing(LinkedList<RestorePointExtra> restorePointExtraList)
+        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
         {
-            var restorePointExtrasForClearing = new LinkedList<RestorePointExtra>();
+            var restorePointExtrasForClearing = new List<RestorePointExtra>();
             if (restorePointExtraList.Count <= _quantityOfRestorePointExtra) return restorePointExtrasForClearing;
             foreach (RestorePointExtra restorePointExtra in restorePointExtraList)
             {
-                restorePointExtrasForClearing.AddLast(restorePointExtra);
+                restorePointExtrasForClearing.Add(restorePointExtra);
                 if (restorePointExtrasForClearing.Count == restorePointExtraList.Count - restorePointExtrasForClearing.Count) break;
             }
 
             return restorePointExtrasForClearing;
+        }
+
+        public RestorePointExtra GetFirstNotClearingRestorePoint(List<RestorePointExtra> restorePointExtraList)
+        {
+            List<RestorePointExtra> restorePoints = GetRestorePointExtrasForClearing(restorePointExtraList);
+            foreach (RestorePointExtra restorePoint in restorePoints)
+            {
+                if (!restorePoints.Contains(restorePoint)) return restorePoint;
+            }
+
+            throw new BackUpsExtraExceptions("The algorithm wants to clear all restore points.");
         }
     }
 }

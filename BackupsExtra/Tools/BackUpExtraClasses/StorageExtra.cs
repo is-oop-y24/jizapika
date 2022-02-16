@@ -8,19 +8,26 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
 {
     public class StorageExtra : Storage
     {
-        private StorageAlgorithmExtraType _storageAlgorithmExtraType;
         private uint _id;
-        public StorageExtra(string way, bool isZipping, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType)
+
+        public StorageExtra(string way, bool isZipping, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType, string compressingName)
             : base(way, isZipping)
         {
             _id = id;
-            _storageAlgorithmExtraType = storageAlgorithmExtraType;
+            StorageAlgorithmExtraType = storageAlgorithmExtraType;
+            CompressingName = compressingName;
         }
+
+        public StorageAlgorithmExtraType StorageAlgorithmExtraType { get; }
+        public string CompressingName { get; }
 
         public uint GetId()
         {
-            if (IsZipping && _storageAlgorithmExtraType == StorageAlgorithmExtraType.SplitType) return _id;
+            if (IsZipping && StorageAlgorithmExtraType == StorageAlgorithmExtraType.SplitType) return _id;
             throw new BackUpsExtraExceptions($"The storage have null id.");
         }
+
+        public bool CanGetId()
+            => IsZipping && StorageAlgorithmExtraType == StorageAlgorithmExtraType.SplitType;
     }
 }

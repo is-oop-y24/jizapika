@@ -16,13 +16,14 @@ namespace Backups.Tools.BackUpClasses
             string backUpName)
         {
             Id = id;
-            string restorePointName = "RestorePoint" + Id;
-            Storages = algorithm.GetStorages(jobObjects, repository, backUpName, restorePointName);
+            RestorePointName = "RestorePoint" + Id;
+            Storages = algorithm.GetStorages(jobObjects, repository, backUpName, RestorePointName);
             Time = DateTime.UtcNow;
         }
 
-        public uint Id { get; protected set; }
         public DateTime Time { get; protected set; }
-        public List<Storage> Storages { get; protected set; }
+        public string RestorePointName { get; }
+        protected uint Id { get; }
+        protected List<Storage> Storages { get; }
     }
 }

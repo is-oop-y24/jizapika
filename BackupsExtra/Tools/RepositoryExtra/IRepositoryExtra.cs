@@ -20,7 +20,10 @@ namespace BackupsExtra.Tools.RepositoryExtra
         public void MergeTwoRestorePointExtras(
             RestorePointExtra oldRestorePointExtra,
             RestorePointExtra newRestorePointExtra,
+            BackUpExtra backUpExtra,
             string backUpExtraName,
-            string newRestorePointExtraName);
+            string newRestorePointExtraName,
+            string compressedName,
+            bool isSplitAlgorithm);
     }
 }

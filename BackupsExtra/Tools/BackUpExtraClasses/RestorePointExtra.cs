@@ -23,5 +23,8 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
         }
 
         public List<StorageExtra> StoragesExtra { get; }
+
+        public bool IsTheSameIdWith(RestorePointExtra restorePointExtra)
+            => restorePointExtra.Id == Id;
     }
 }

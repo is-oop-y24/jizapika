@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using BackupsExtra.Tools.BackUpExtraClasses;
 using BackupsExtra.Tools.ClearingAlgorithm;
 using BackupsExtra.Tools.RepositoryExtra;
@@ -14,10 +15,20 @@ namespace BackupsExtra.Tools.MergerClass
             _repositoryExtra = repositoryExtra;
         }
 
-        public void MergeRestorePointExtras(ISelectingAlgorithm selectingAlgorithm, BackUpExtra backUpExtra)
+        public void MergeRestoresPointExtra(
+        ISelectingAlgorithm selectingAlgorithm,
+        BackUpExtra backUpExtra,
+        string backUpExtraName,
+        string compressedName,
+        bool isSplitAlgorithm)
         {
-            LinkedList<RestorePointExtra> selectingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(backUpExtra.LinkedRestorePointExtraList);
-            
+            var allRestorePoints = backUpExtra.ImmutableRestorePointExtraList.ToList();
+            List<RestorePointExtra> mergingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(allRestorePoints);
+            mergingRestorePointExtras.Add(selectingAlgorithm.GetFirstNotClearingRestorePoint(allRestorePoints));
+            for (int index = 1; index < mergingRestorePointExtras.Count; index++)
+            {
+                _repositoryExtra.MergeTwoRestorePointExtras(mergingRestorePointExtras[index - 1], mergingRestorePointExtras[index], backUpExtra, backUpExtraName, mergingRestorePointExtras[index].RestorePointName, compressedName, isSplitAlgorithm);
+            }
         }
     }
 }

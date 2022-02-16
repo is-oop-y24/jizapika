@@ -5,6 +5,7 @@ namespace BackupsExtra.Tools.ClearingAlgorithm
 {
     public interface ISelectingAlgorithm
     {
-        public LinkedList<RestorePointExtra> GetRestorePointExtrasForClearing(LinkedList<RestorePointExtra> restorePointExtraList);
+        public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList);
+        public RestorePointExtra GetFirstNotClearingRestorePoint(List<RestorePointExtra> restorePointExtraList);
     }
 }

@@ -56,32 +56,50 @@ namespace BackupsExtra.Tools.RepositoryExtra
         }
 
         public StorageExtra CopyStorageExtra(StorageExtra storageExtra)
-            => 
+        {
+            if (storageExtra.CanGetId()) return new StorageExtra(storageExtra.Way, storageExtra.IsZipping, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName);
+            return new StorageExtra(storageExtra.Way, storageExtra.IsZipping, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName);
+        }
 
         public void MergeTwoRestorePointExtras(
             RestorePointExtra oldRestorePointExtra,
             RestorePointExtra newRestorePointExtra,
+            BackUpExtra backUpExtra,
             string backUpExtraName,
-            string newRestorePointExtraName)
+            string newRestorePointExtraName,
+            string compressedName,
+            bool isSplitAlgorithm)
         {
-            foreach (StorageExtra oldStorageExtra in oldRestorePointExtra.StoragesExtra)
+            if (isSplitAlgorithm)
             {
-                bool flag = true;
-                foreach (StorageExtra newStorageExtra in newRestorePointExtra.StoragesExtra)
+                foreach (StorageExtra oldStorageExtra in oldRestorePointExtra.StoragesExtra)
                 {
-                    if (oldStorageExtra.GetId() == newStorageExtra.GetId())
+                    bool isInNewRestorePoint = true;
+                    foreach (StorageExtra newStorageExtra in newRestorePointExtra.StoragesExtra)
                     {
+                        if (oldStorageExtra.GetId() == newStorageExtra.GetId())
+                        {
+                            oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
+                            isInNewRestorePoint = false;
+                            break;
+                        }
+                    }
+
+                    if (isInNewRestorePoint)
+                    {
+                        StorageExtra storageExtra = CopyStorageExtra(oldStorageExtra);
                         oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
-                        flag = false;
-                        break;
+                        newRestorePointExtra.StoragesExtra.Add(storageExtra);
                     }
                 }
+            }
 
-                if (flag)
+            foreach (RestorePointExtra restorePointExtra in backUpExtra.ImmutableRestorePointExtraList)
+            {
+                if (restorePointExtra.IsTheSameIdWith(oldRestorePointExtra))
                 {
-                    StorageExtra storageExtra = CopyStorageExtra(oldStorageExtra);
-                    oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
-                    newRestorePointExtra.StoragesExtra.Add(storageExtra);
+                    backUpExtra.DeleteRestorePoint(restorePointExtra);
+                    return;
                 }
             }
         }
