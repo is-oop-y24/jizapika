@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Backups.Tools.BackUpClasses;
-using Backups.Tools.JobObjectsClasses;
+using System.Linq;
 using Backups.Tools.Repository;
 using BackupsExtra.Tools.BackUpExtraClasses;
 
@@ -9,65 +8,39 @@ namespace BackupsExtra.Tools.RepositoryExtra
 {
     public class AbstractFileSystemExtra : AbstractFileSystem, IRepositoryExtra
     {
-        public List<Storage> UnCompressingObjectsToOriginalLocation(
-            Storage storage,
-            string backUpName,
-            string restorePointName,
-            string compressedName)
-        {
-            throw new System.NotImplementedException();
-        }
+        public List<StorageExtra> UnCompressingObjectsToOriginalLocation(StorageExtra storageExtra)
+            => storageExtra.ImmutableOriginalWays.Select(originalWay =>
+                    storageExtra.CanGetId()
+                        ? new StorageExtra(originalWay, false, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>())
+                        : new StorageExtra(originalWay, false, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>()))
+                .ToList();
 
-        public List<Storage> UnCompressingObjectsToDifferentLocation(
-            Storage storage,
-            string backUpName,
-            string restorePointName,
-            string compressedName)
-        {
-            throw new System.NotImplementedException();
-        }
+        public List<StorageExtra> UnCompressingObjectsToDifferentLocation(StorageExtra storageExtra, string locationWay)
+            => storageExtra.ImmutableOriginalWays.Select(originalWay =>
+                        storageExtra.CanGetId()
+                    ? new StorageExtra(Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay)), false, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>())
+                    : new StorageExtra(Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay)), false, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>()))
+                .ToList();
 
-        public List<StorageExtra> UnCompressingObjectsToOriginalLocation(
-            StorageExtra storageExtra,
-            string backUpExtraName,
-            string restorePointExtraName,
-            string compressedName)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public List<StorageExtra> UnCompressingObjectsToDifferentLocation(
-            StorageExtra storageExtra,
-            string backUpExtraName,
-            string restorePointExtraName,
-            string compressedName)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void DeleteJobObject(JobObject jobObject)
-        {
-            throw new System.NotImplementedException();
-        }
+        public bool CanUncompressing(StorageExtra storageExtra)
+            => storageExtra.IsZipping;
 
         public void DeleteStorageExtraFromRepository(StorageExtra storageExtra)
         {
-            throw new System.NotImplementedException();
         }
 
+        public bool CanDeleteStorageExtraFromRepository(StorageExtra storageExtra)
+            => true;
+
         public StorageExtra CopyStorageExtra(StorageExtra storageExtra)
-        {
-            if (storageExtra.CanGetId()) return new StorageExtra(storageExtra.Way, storageExtra.IsZipping, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName);
-            return new StorageExtra(storageExtra.Way, storageExtra.IsZipping, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName);
-        }
+            => storageExtra.CanGetId()
+                ? new StorageExtra(storageExtra.Way, storageExtra.IsZipping, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList())
+                : new StorageExtra(storageExtra.Way, storageExtra.IsZipping, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList());
 
         public void MergeTwoRestorePointExtras(
             RestorePointExtra oldRestorePointExtra,
             RestorePointExtra newRestorePointExtra,
             BackUpExtra backUpExtra,
-            string backUpExtraName,
-            string newRestorePointExtraName,
-            string compressedName,
             bool isSplitAlgorithm)
         {
             if (isSplitAlgorithm)

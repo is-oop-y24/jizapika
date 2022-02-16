@@ -8,12 +8,9 @@ namespace BackupsExtra.Tools.RepositoryExtra
 {
     public interface IRepositoryExtra : IRepository
     {
-        List<StorageExtra> UnCompressingObjectsToOriginalLocation(
-            StorageExtra storageExtra, string backUpExtraName, string restorePointExtraName, string compressedName);
-        List<StorageExtra> UnCompressingObjectsToDifferentLocation(
-            StorageExtra storageExtra, string backUpExtraName, string restorePointExtraName, string compressedName);
-
-        void DeleteJobObject(JobObject jobObject);
+        List<StorageExtra> UnCompressingObjectsToOriginalLocation(StorageExtra storageExtra);
+        List<StorageExtra> UnCompressingObjectsToDifferentLocation(StorageExtra storageExtra, string locationWay);
+        bool CanUncompressing(StorageExtra storageExtra);
         void DeleteStorageExtraFromRepository(StorageExtra storageExtra);
         StorageExtra CopyStorageExtra(StorageExtra storageExtra);
 
@@ -21,9 +18,6 @@ namespace BackupsExtra.Tools.RepositoryExtra
             RestorePointExtra oldRestorePointExtra,
             RestorePointExtra newRestorePointExtra,
             BackUpExtra backUpExtra,
-            string backUpExtraName,
-            string newRestorePointExtraName,
-            string compressedName,
             bool isSplitAlgorithm);
     }
 }

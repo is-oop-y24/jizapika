@@ -30,6 +30,6 @@ namespace Backups.Services
         public RestorePoint MakeRestorePoint() => _backUp.MakeRestorePoint(_jobObjects, _repository, _algorithm);
         public int QuantityOfRestorePoints() => _backUp.RestorePointList.Count;
 
-        public int QuantityOfStorages() => _backUp.RestorePointList.Sum(restorePoint => restorePoint.Storages.Count);
+        public int QuantityOfStorages() => _backUp.RestorePointList.Sum(restorePoint => restorePoint.ImmutableStorages.Count);
     }
 }

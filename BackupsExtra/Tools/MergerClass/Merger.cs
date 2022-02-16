@@ -18,8 +18,6 @@ namespace BackupsExtra.Tools.MergerClass
         public void MergeRestoresPointExtra(
         ISelectingAlgorithm selectingAlgorithm,
         BackUpExtra backUpExtra,
-        string backUpExtraName,
-        string compressedName,
         bool isSplitAlgorithm)
         {
             var allRestorePoints = backUpExtra.ImmutableRestorePointExtraList.ToList();
@@ -27,7 +25,7 @@ namespace BackupsExtra.Tools.MergerClass
             mergingRestorePointExtras.Add(selectingAlgorithm.GetFirstNotClearingRestorePoint(allRestorePoints));
             for (int index = 1; index < mergingRestorePointExtras.Count; index++)
             {
-                _repositoryExtra.MergeTwoRestorePointExtras(mergingRestorePointExtras[index - 1], mergingRestorePointExtras[index], backUpExtra, backUpExtraName, mergingRestorePointExtras[index].RestorePointName, compressedName, isSplitAlgorithm);
+                _repositoryExtra.MergeTwoRestorePointExtras(mergingRestorePointExtras[index - 1], mergingRestorePointExtras[index], backUpExtra, isSplitAlgorithm);
             }
         }
     }
