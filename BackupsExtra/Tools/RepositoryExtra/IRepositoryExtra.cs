@@ -10,6 +10,7 @@ namespace BackupsExtra.Tools.RepositoryExtra
     {
         List<StorageExtra> UnCompressingObjectsToOriginalLocation(StorageExtra storageExtra);
         List<StorageExtra> UnCompressingObjectsToDifferentLocation(StorageExtra storageExtra, string locationWay);
+        public void UnCompressingObject(string sourceFile, string targetDirectory);
         bool CanUncompressing(StorageExtra storageExtra);
         void DeleteStorageExtraFromRepository(StorageExtra storageExtra);
         StorageExtra CopyStorageExtra(StorageExtra storageExtra);

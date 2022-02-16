@@ -19,12 +19,43 @@ namespace BackupsExtra.Tools.RepositoryExtra
 
         public List<StorageExtra> UnCompressingObjectsToOriginalLocation(StorageExtra storageExtra)
         {
-            throw new System.NotImplementedException();
+            var storages = new List<StorageExtra>();
+            foreach (string originalWay in storageExtra.ImmutableOriginalWays)
+            {
+                string way = Path.Combine(originalWay, ObjectNameWithoutExtension(originalWay));
+                if (storageExtra.CanGetId())
+                {
+                    var storage = new StorageExtra(way, false, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>());
+                    storages.Add(storage);
+                    UnCompressingObject(storageExtra.CompressingName, originalWay);
+                }
+            }
+
+            return storages;
         }
 
         public List<StorageExtra> UnCompressingObjectsToDifferentLocation(StorageExtra storageExtra, string locationWay)
         {
-            throw new System.NotImplementedException();
+            var storages = new List<StorageExtra>();
+            if (!Directory.Exists(locationWay)) Directory.CreateDirectory(locationWay);
+            foreach (string originalWay in storageExtra.ImmutableOriginalWays)
+            {
+                string way = Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay));
+                if (storageExtra.CanGetId())
+                {
+                    var storage = new StorageExtra(way, false, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>());
+                    storages.Add(storage);
+                    UnCompressingObject(storageExtra.CompressingName, locationWay);
+                }
+            }
+
+            return storages;
+        }
+
+        public void UnCompressingObject(string sourceFile, string targetDirectory)
+        {
+            ZipArchive zipArchive = ZipFile.Open(sourceFile, ZipArchiveMode.Update);
+            zipArchive.ExtractToDirectory(targetDirectory, true);
         }
 
         public bool CanUncompressing(StorageExtra storageExtra)
@@ -88,6 +119,8 @@ namespace BackupsExtra.Tools.RepositoryExtra
                     }
 
                     backUpExtra.DeleteRestorePoint(restorePointExtra);
+                    string directoryWay = Path.Combine(Root, backUpExtra.Name, restorePointExtra.RestorePointName);
+                    Directory.Delete(directoryWay);
                 }
             }
         }
@@ -96,7 +129,7 @@ namespace BackupsExtra.Tools.RepositoryExtra
         {
             if (!CanDeleteStorageExtraFromRepository(storageExtra))
                 throw new BackUpsExtraExceptions("Storage can't be deleted");
-            File.Delete(storageExtra.CompressingName);
+            RemoveFile(storageExtra.CompressingName);
         }
 
         public bool CanDeleteStorageExtraFromRepository(StorageExtra storageExtra)
@@ -123,18 +156,11 @@ namespace BackupsExtra.Tools.RepositoryExtra
 
         protected void RemoveFile(string path)
         {
+            if (!CanRemoveFile(path)) throw new BackUpsExtraExceptions("File doesn't exist.");
             File.Delete(path);
         }
 
         protected bool CanRemoveFile(string path)
             => File.Exists(path);
-
-        protected bool CanReplaceFile(string currentPath, string nextPath)
-            => File.Exists(currentPath);
-
-        protected void ReplaceFile(string currentPath, string nextPath)
-        {
-            File.Move(currentPath, nextPath, true);
-        }
     }
 }

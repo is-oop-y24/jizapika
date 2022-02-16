@@ -22,6 +22,10 @@ namespace BackupsExtra.Tools.RepositoryExtra
                     : new StorageExtra(Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay)), false, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>()))
                 .ToList();
 
+        public void UnCompressingObject(string sourceFile, string targetDirectory)
+        {
+        }
+
         public bool CanUncompressing(StorageExtra storageExtra)
             => storageExtra.IsZipping;
 
