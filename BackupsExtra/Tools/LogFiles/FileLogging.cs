@@ -1,5 +1,5 @@
+using System;
 using System.IO;
-using NUnit.Framework.Internal;
 
 namespace BackupsExtra.Tools.LogFiles
 {
@@ -7,23 +7,31 @@ namespace BackupsExtra.Tools.LogFiles
     {
         private bool _isNeedTime;
         private string _path;
-        private readonly Logger _logger;
         private string _allPath;
 
-        public FileLogging(string path, bool isNeedTime)
+        public FileLogging(string pathDirectory, bool isNeedTime)
         {
             _isNeedTime = isNeedTime;
-            _path = path;
+            _path = pathDirectory;
             _allPath = Path.Combine(_path, "logs.txt");
-            _logger = new Logger(_allPath);
         }
 
         public void Info(string message)
         {
+            if (_isNeedTime) message = DateTime.UtcNow + " [Info] " + ": " + message;
+            using (StreamWriter fileStream = File.AppendText(_allPath))
+            {
+                fileStream.WriteLine(message);
+            }
         }
 
         public void Warning(string message)
         {
+            if (_isNeedTime) message = DateTime.UtcNow + " [Warning] " + ": " + message;
+            using (StreamWriter fileStream = File.AppendText(_allPath))
+            {
+                fileStream.WriteLine(message);
+            }
         }
 
         public void BeginMakingTimeAlert()
