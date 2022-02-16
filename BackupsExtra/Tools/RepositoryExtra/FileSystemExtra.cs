@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Backups.Tools.BackUpClasses;
+using Backups.Tools.JobObjectsClasses;
 using Backups.Tools.Repository;
 using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.BackUpExtraClasses;
@@ -77,6 +78,13 @@ namespace BackupsExtra.Tools.RepositoryExtra
             return new StorageExtra(compressedFile, true, storages[0].GetId(), storageAlgorithmExtra, compressedName, storages.Select(storage => storage.Way).ToList());
         }
 
+        public StorageExtra CopyObject(JobObject jobObject, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType)
+        {
+            if (!File.Exists(jobObject.Way))
+                throw new BackUpsExtraExceptions($"Not correct file name: {jobObject.Way}.");
+            return new StorageExtra(jobObject.Way, false, id, storageAlgorithmExtraType, jobObject.Way, new List<string>());
+        }
+
         public void MergeTwoRestorePointExtras(
             RestorePointExtra oldRestorePointExtra,
             RestorePointExtra newRestorePointExtra,
@@ -139,6 +147,17 @@ namespace BackupsExtra.Tools.RepositoryExtra
         {
             if (storageExtra.CanGetId()) return new StorageExtra(storageExtra.Way, storageExtra.IsZipping, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList());
             return new StorageExtra(storageExtra.Way, storageExtra.IsZipping, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList());
+        }
+
+        public StorageExtra CompressingObjects(List<StorageExtra> storages, string backUpName, string restorePointName, string compressedName)
+        {
+            string fakeDirectoryName = PackStoragesToRestorePoint(storages, backUpName, restorePointName + "_fake");
+            string normalDirectoryName = Path.Combine(Root, backUpName, restorePointName);
+            Directory.CreateDirectory(normalDirectoryName);
+            string compressedFile = Path.Combine(normalDirectoryName, compressedName) + ".zip";
+            ZipFile.CreateFromDirectory(fakeDirectoryName, compressedFile);
+            Directory.Delete(fakeDirectoryName, true);
+            return new StorageExtra(compressedFile, true, storages[0].GetId(), storages[0].StorageAlgorithmExtraType, compressedName, storages.Select(storageExtra => storageExtra.Way).ToList());
         }
 
         protected string PackStoragesToRestorePoint(

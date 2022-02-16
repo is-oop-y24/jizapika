@@ -13,7 +13,15 @@ namespace BackupsExtra.Tools.StorageAlgorithmExtra
 
         public List<StorageExtra> GetStorages(JobObjects sourceRepository, IRepositoryExtra repository, string backUpName, string restorePointName)
         {
-            throw new System.NotImplementedException();
+            var storages = new List<StorageExtra>();
+            foreach (JobObject jobObject in sourceRepository.JobObjectsImmutableList)
+            {
+                StorageExtra storage = repository.CopyObject(jobObject, 0, GetStorageAlgorithmExtraType());
+                var algorithmStorageList = new List<StorageExtra>() { storage };
+                storages.Add(repository.CompressingObjects(algorithmStorageList, backUpName, restorePointName, repository.ObjectNameWithoutExtension(jobObject.Way)));
+            }
+
+            return storages;
         }
     }
 }

@@ -8,28 +8,28 @@ namespace Backups.Services
 {
     public class BackUpJob
     {
-        private IRepository _repository;
-        private IStorageAlgorithm _algorithm;
-        private JobObjects _jobObjects;
-        private BackUp _backUp;
-
         public BackUpJob(IRepository repository, IStorageAlgorithm algorithm, string backUpName)
         {
-            _repository = repository;
-            _algorithm = algorithm;
-            _jobObjects = new JobObjects();
-            _backUp = new BackUp(backUpName);
+            Repository = repository;
+            Algorithm = algorithm;
+            JobObjects = new JobObjects();
+            BackUp = new BackUp(backUpName);
         }
+
+        protected BackUp BackUp { get; }
+        protected IRepository Repository { get; }
+        protected IStorageAlgorithm Algorithm { get; }
+        protected JobObjects JobObjects { get; }
 
         public JobObject AddJobObject(string way)
         {
-            return _jobObjects.AddJobObject(way);
+            return JobObjects.AddJobObject(way);
         }
 
-        public bool DeleteJobObject(JobObject jobObject) => _jobObjects.DeleteJobObject(jobObject);
-        public RestorePoint MakeRestorePoint() => _backUp.MakeRestorePoint(_jobObjects, _repository, _algorithm);
-        public int QuantityOfRestorePoints() => _backUp.RestorePointList.Count;
+        public bool DeleteJobObject(JobObject jobObject) => JobObjects.DeleteJobObject(jobObject);
+        public RestorePoint MakeRestorePoint() => BackUp.MakeRestorePoint(JobObjects, Repository, Algorithm);
+        public int QuantityOfRestorePoints() => BackUp.ImmutableRestorePointList.Count;
 
-        public int QuantityOfStorages() => _backUp.RestorePointList.Sum(restorePoint => restorePoint.ImmutableStorages.Count);
+        public int QuantityOfStorages() => BackUp.ImmutableRestorePointList.Sum(restorePoint => restorePoint.ImmutableStorages.Count);
     }
 }

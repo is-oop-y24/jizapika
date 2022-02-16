@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.BackUpExtraClasses;
 using BackupsExtra.Tools.ClearingAlgorithm;
 using BackupsExtra.Tools.RepositoryExtra;
@@ -26,6 +27,8 @@ namespace BackupsExtra.Tools.ClearerClass
                     _repositoryExtra.DeleteStorageExtraFromRepository(storage);
                 }
 
+                if (!backUpExtra.CanDeleteRestorePoint(restorePointExtra))
+                    throw new BackUpsExtraExceptions("Restore Point can't be deleted.");
                 backUpExtra.DeleteRestorePoint(restorePointExtra);
             }
         }

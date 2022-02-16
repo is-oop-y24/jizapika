@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Backups.Tools.JobObjectsClasses;
 using Backups.Tools.Repository;
 using BackupsExtra.Tools.BackUpExtraClasses;
+using BackupsExtra.Tools.StorageAlgorithmExtra;
 
 namespace BackupsExtra.Tools.RepositoryExtra
 {
@@ -40,6 +42,12 @@ namespace BackupsExtra.Tools.RepositoryExtra
             => storageExtra.CanGetId()
                 ? new StorageExtra(storageExtra.Way, storageExtra.IsZipping, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList())
                 : new StorageExtra(storageExtra.Way, storageExtra.IsZipping, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList());
+
+        public StorageExtra CompressingObjects(List<StorageExtra> storages, string backUpName, string restorePointName, string compressedName)
+            => new StorageExtra(string.Empty, true, storages[0].GetId(), storages[0].StorageAlgorithmExtraType, compressedName, storages.Select(storageExtra => storageExtra.Way).ToList());
+
+        public StorageExtra CopyObject(JobObject jobObject, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType)
+            => new StorageExtra(jobObject.Way, false, id, storageAlgorithmExtraType, jobObject.Way, new List<string>());
 
         public void MergeTwoRestorePointExtras(
             RestorePointExtra oldRestorePointExtra,
