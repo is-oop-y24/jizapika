@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.BackUpExtraClasses;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
 {
     public class AllSelectingAlgorithm : ISelectingAlgorithm
     {
+        [JsonProperty]
         private uint _quantityOfRestorePointExtra;
+        [JsonProperty]
         private DateTime _lastDate;
 
         public AllSelectingAlgorithm(uint quantityOfRestorePointExtra, DateTime lastDate)

@@ -93,14 +93,13 @@ namespace BackupsExtra.Tools.RepositoryExtra
         {
             if (isSplitAlgorithm)
             {
-                foreach (StorageExtra oldStorageExtra in oldRestorePointExtra.StoragesExtra)
+                foreach (StorageExtra oldStorageExtra in oldRestorePointExtra.ImmutableStorages)
                 {
                     bool isInNewRestorePoint = true;
-                    foreach (StorageExtra newStorageExtra in newRestorePointExtra.StoragesExtra)
+                    foreach (StorageExtra newStorageExtra in newRestorePointExtra.ImmutableStorages)
                     {
                         if (oldStorageExtra.GetId() == newStorageExtra.GetId())
                         {
-                            oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
                             DeleteStorageExtraFromRepository(oldStorageExtra);
                             isInNewRestorePoint = false;
                             break;
@@ -110,9 +109,8 @@ namespace BackupsExtra.Tools.RepositoryExtra
                     if (isInNewRestorePoint)
                     {
                         StorageExtra storageExtra = CopyStorageExtra(oldStorageExtra);
-                        oldRestorePointExtra.StoragesExtra.Remove(oldStorageExtra);
                         DeleteStorageExtraFromRepository(oldStorageExtra);
-                        newRestorePointExtra.StoragesExtra.Add(storageExtra);
+                        newRestorePointExtra.AddStorage(storageExtra);
                     }
                 }
             }
@@ -121,7 +119,7 @@ namespace BackupsExtra.Tools.RepositoryExtra
             {
                 if (restorePointExtra.IsTheSameIdWith(oldRestorePointExtra))
                 {
-                    foreach (StorageExtra storage in restorePointExtra.StoragesExtra)
+                    foreach (StorageExtra storage in restorePointExtra.ImmutableStorages)
                     {
                         DeleteStorageExtraFromRepository(storage);
                     }

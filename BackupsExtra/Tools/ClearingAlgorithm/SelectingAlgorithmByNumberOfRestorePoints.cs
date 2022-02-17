@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.BackUpExtraClasses;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm
 {
     public class SelectingAlgorithmByNumberOfRestorePoints : ISelectingAlgorithm
     {
+        [JsonProperty]
         private uint _quantityOfRestorePointExtra;
 
         public SelectingAlgorithmByNumberOfRestorePoints(uint quantityOfRestorePoint)

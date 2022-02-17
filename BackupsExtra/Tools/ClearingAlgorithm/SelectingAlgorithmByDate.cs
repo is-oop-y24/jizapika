@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Backups.Tools.BackUpClasses;
 using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.BackUpExtraClasses;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.ClearingAlgorithm
 {
     public class SelectingAlgorithmByDate : ISelectingAlgorithm
     {
+        [JsonProperty]
         private DateTime _lastDate;
 
         public SelectingAlgorithmByDate(DateTime lastDate)

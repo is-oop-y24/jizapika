@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using Backups.Exceptions;
 using Backups.Tools.BackUpClasses;
-using Backups.Tools.StorageAlgorithm;
 using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.StorageAlgorithmExtra;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.BackUpExtraClasses
 {
     public class StorageExtra : Storage
     {
+        [JsonProperty]
         private uint _id;
+        [JsonProperty]
         private List<string> _originalWays;
 
         public StorageExtra(string way, bool isZipping, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType, string compressingName, List<string> originalWays)

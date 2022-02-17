@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using Backups.Tools.JobObjectsClasses;
 using Backups.Tools.Repository;
 using Backups.Tools.StorageAlgorithm;
+using Newtonsoft.Json;
 
 namespace Backups.Tools.BackUpClasses
 {
@@ -25,7 +26,7 @@ namespace Backups.Tools.BackUpClasses
         public DateTime Time { get; protected set; }
         public string RestorePointName { get; }
         public ImmutableList<Storage> ImmutableStorages => Storages.ToImmutableList();
-        protected uint Id { get; }
-        protected List<Storage> Storages { get; }
+        protected uint Id { get; set; }
+        protected List<Storage> Storages { get; set; }
     }
 }

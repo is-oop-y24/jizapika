@@ -4,11 +4,13 @@ using BackupsExtra.Exceptions;
 using BackupsExtra.Tools.BackUpExtraClasses;
 using BackupsExtra.Tools.ClearingAlgorithm;
 using BackupsExtra.Tools.RepositoryExtra;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.ClearerClass
 {
     public class Deleter : IClearer
     {
+        [JsonProperty]
         private IRepositoryExtra _repositoryExtra;
 
         public Deleter(IRepositoryExtra repositoryExtra)
@@ -22,7 +24,7 @@ namespace BackupsExtra.Tools.ClearerClass
             List<RestorePointExtra> deletingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(allRestorePoints);
             foreach (RestorePointExtra restorePointExtra in deletingRestorePointExtras)
             {
-                foreach (StorageExtra storage in restorePointExtra.StoragesExtra)
+                foreach (StorageExtra storage in restorePointExtra.ImmutableStorages)
                 {
                     _repositoryExtra.DeleteStorageExtraFromRepository(storage);
                 }

@@ -1,13 +1,14 @@
 using System;
-using System.IO;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.LogFiles
 {
     public class ConsoleLogging
     {
+        [JsonProperty]
         private bool _isNeedTime;
 
-        public ConsoleLogging(string pathDirectory, bool isNeedTime)
+        public ConsoleLogging(bool isNeedTime)
         {
             _isNeedTime = isNeedTime;
         }

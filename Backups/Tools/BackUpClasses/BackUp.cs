@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using Backups.Tools.JobObjectsClasses;
 using Backups.Tools.Repository;
 using Backups.Tools.StorageAlgorithm;
+using Newtonsoft.Json;
 
 namespace Backups.Tools.BackUpClasses
 {

@@ -3,6 +3,7 @@ using Backups.Tools.BackUpClasses;
 using Backups.Tools.JobObjectsClasses;
 using Backups.Tools.Repository;
 using Backups.Tools.StorageAlgorithm;
+using Newtonsoft.Json;
 
 namespace Backups.Services
 {
@@ -16,10 +17,10 @@ namespace Backups.Services
             BackUp = new BackUp(backUpName);
         }
 
-        protected BackUp BackUp { get; }
-        protected IRepository Repository { get; }
-        protected IStorageAlgorithm Algorithm { get; }
-        protected JobObjects JobObjects { get; }
+        protected BackUp BackUp { get; set; }
+        protected IRepository Repository { get; set; }
+        protected IStorageAlgorithm Algorithm { get; set; }
+        protected JobObjects JobObjects { get; set; }
 
         public JobObject AddJobObject(string way)
         {

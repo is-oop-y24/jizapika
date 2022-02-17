@@ -1,9 +1,10 @@
-using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Backups.Tools.BackUpClasses;
 using Backups.Tools.JobObjectsClasses;
 using BackupsExtra.Tools.RepositoryExtra;
 using BackupsExtra.Tools.StorageAlgorithmExtra;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.BackUpExtraClasses
 {
@@ -17,14 +18,18 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
             string backUpName)
             : base(jobObjects, algorithmExtra, id, repositoryExtra, backUpName)
         {
-            string restorePointName = "RestorePoint" + Id;
-            StoragesExtra = algorithmExtra.GetStorages(jobObjects, repositoryExtra, backUpName, restorePointName);
-            Time = DateTime.UtcNow;
         }
 
-        public List<StorageExtra> StoragesExtra { get; }
+        public new ImmutableList<StorageExtra> ImmutableStorages => Storages.ToImmutableList();
+        [JsonProperty]
+        protected new List<StorageExtra> Storages { get; set; }
 
         public bool IsTheSameIdWith(RestorePointExtra restorePointExtra)
             => restorePointExtra.Id == Id;
+
+        public void AddStorage(StorageExtra storage)
+        {
+            Storages.Add(storage);
+        }
     }
 }

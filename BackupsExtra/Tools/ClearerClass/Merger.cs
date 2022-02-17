@@ -3,11 +3,13 @@ using System.Linq;
 using BackupsExtra.Tools.BackUpExtraClasses;
 using BackupsExtra.Tools.ClearingAlgorithm;
 using BackupsExtra.Tools.RepositoryExtra;
+using Newtonsoft.Json;
 
 namespace BackupsExtra.Tools.ClearerClass
 {
     public class Merger : IClearer
     {
+        [JsonProperty]
         private IRepositoryExtra _repositoryExtra;
 
         public Merger(IRepositoryExtra repositoryExtra)
