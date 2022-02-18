@@ -1,4 +1,4 @@
-using System;
+using System.Linq;
 using Isu.Services;
 using Isu.Tools;
 using NUnit.Framework;
@@ -7,15 +7,6 @@ namespace Isu.Tests
 {
     public class Tests
     {
-        private IIsuService _isuService;
-
-        [SetUp]
-        public void Setup()
-        {
-            //TODO: implement
-            _isuService = null;
-        }
-
         [TestCase("Lev", "M3202")]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent(string name, string groupname)
         {
@@ -25,15 +16,7 @@ namespace Isu.Tests
                 Group group = isu.AddGroup(groupname);
                 Student student = isu.AddStudent(group, name);
                 group = isu.FindGroup(groupname);
-                bool t = false;
-                foreach (Student curSt in group.Get_stData())
-                {
-                    if (curSt == student)
-                    {
-                        t = true;
-                        break;
-                    }
-                }
+                bool t = @group.Get_stData().Any(curSt => curSt == student);
 
                 if (!t) Assert.Fail("The group doesn't include this student.");
                 if (student.GetGroup() != group.Name()) Assert.Fail("The student hasn't this group.");
@@ -48,10 +31,10 @@ namespace Isu.Tests
                 var isu = new IsuService();
                 isu.Change_maxSt(3);
                 Group group = isu.AddGroup("M3202");
-                Student lev = isu.AddStudent(group, "Lev");
-                Student sergo = isu.AddStudent(group, "Sergo");
-                Student artem = isu.AddStudent(group, "Artem");
-                Student ruslan = isu.AddStudent(group, "Ruslan");
+                isu.AddStudent(group, "Lev");
+                isu.AddStudent(group, "Sergo");
+                isu.AddStudent(group, "Artem");
+                isu.AddStudent(group, "Ruslan");
             });
         }
 
@@ -66,7 +49,7 @@ namespace Isu.Tests
             {
                 var isu = new IsuService();
                 isu.NewCourseLimit(minCourse, maxCourse);
-                Group group = isu.AddGroup(groupName);
+                isu.AddGroup(groupName);
             });
         }
 
@@ -80,7 +63,6 @@ namespace Isu.Tests
             Group group2 = isu.AddGroup(name2);
             Student lev = isu.AddStudent(group1, "Lev");
             isu.ChangeStudentGroup(lev, group2);
-            bool t = false;
             foreach (Student curSt in group2.Get_stData())
             {
                 Assert.IsTrue(curSt.GetName() == "Lev");
