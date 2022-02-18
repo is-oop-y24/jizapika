@@ -19,6 +19,7 @@ namespace Backups.Tools.BackUpClasses
             Name = name;
         }
 
+        [JsonIgnore]
         public ImmutableList<RestorePoint> ImmutableRestorePointList => _restorePointList.ToImmutableList();
         public string Name { get; }
 

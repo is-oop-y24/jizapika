@@ -8,21 +8,20 @@ namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
 {
     public class AllSelectingAlgorithm : ISelectingAlgorithm
     {
-        [JsonProperty]
-        private uint _quantityOfRestorePointExtra;
-        [JsonProperty]
-        private DateTime _lastDate;
-
         public AllSelectingAlgorithm(uint quantityOfRestorePointExtra, DateTime lastDate)
         {
-            _quantityOfRestorePointExtra = quantityOfRestorePointExtra;
-            _lastDate = lastDate;
+            QuantityOfRestorePointExtra = quantityOfRestorePointExtra;
+            LastDate = lastDate;
         }
 
+        [JsonProperty]
+        private uint QuantityOfRestorePointExtra { get; }
+        [JsonProperty]
+        private DateTime LastDate { get; }
         public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
         {
-            var clearingAlgorithmByNumberOfRestorePoints = new SelectingAlgorithmByNumberOfRestorePoints(_quantityOfRestorePointExtra);
-            var clearingAlgorithmByDate = new SelectingAlgorithmByDate(_lastDate);
+            var clearingAlgorithmByNumberOfRestorePoints = new SelectingAlgorithmByNumberOfRestorePoints(QuantityOfRestorePointExtra);
+            var clearingAlgorithmByDate = new SelectingAlgorithmByDate(LastDate);
             List<RestorePointExtra> restorePointExtrasForClearingByNumberOfRestorePoints
                 = clearingAlgorithmByNumberOfRestorePoints.GetRestorePointExtrasForClearing(restorePointExtraList);
             return clearingAlgorithmByDate.GetRestorePointExtrasForClearing(
@@ -32,7 +31,7 @@ namespace BackupsExtra.Tools.ClearingAlgorithm.HybridClearingAlgorithm
         public RestorePointExtra GetFirstNotClearingRestorePoint(List<RestorePointExtra> restorePointExtraList)
         {
             List<RestorePointExtra> restorePoints = GetRestorePointExtrasForClearing(restorePointExtraList);
-            foreach (RestorePointExtra restorePoint in restorePoints)
+            foreach (RestorePointExtra restorePoint in restorePointExtraList)
             {
                 if (!restorePoints.Contains(restorePoint)) return restorePoint;
             }

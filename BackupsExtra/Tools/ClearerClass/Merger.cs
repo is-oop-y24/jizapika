@@ -9,17 +9,10 @@ namespace BackupsExtra.Tools.ClearerClass
 {
     public class Merger : IClearer
     {
-        [JsonProperty]
-        private IRepositoryExtra _repositoryExtra;
-
-        public Merger(IRepositoryExtra repositoryExtra)
-        {
-            _repositoryExtra = repositoryExtra;
-        }
-
         public void ClearRestoresPointExtra(
         ISelectingAlgorithm selectingAlgorithm,
         BackUpExtra backUpExtra,
+        IRepositoryExtra repositoryExtra,
         bool isSplitAlgorithm)
         {
             var allRestorePoints = backUpExtra.ImmutableRestorePointExtraList.ToList();
@@ -27,7 +20,7 @@ namespace BackupsExtra.Tools.ClearerClass
             mergingRestorePointExtras.Add(selectingAlgorithm.GetFirstNotClearingRestorePoint(allRestorePoints));
             for (int index = 1; index < mergingRestorePointExtras.Count; index++)
             {
-                _repositoryExtra.MergeTwoRestorePointExtras(mergingRestorePointExtras[index - 1], mergingRestorePointExtras[index], backUpExtra, isSplitAlgorithm);
+                repositoryExtra.MergeTwoRestorePointExtras(mergingRestorePointExtras[index - 1], mergingRestorePointExtras[index], backUpExtra, isSplitAlgorithm);
             }
         }
     }

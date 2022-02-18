@@ -5,6 +5,7 @@ using System.IO.Compression;
 using Backups.Exceptions;
 using Backups.Tools.BackUpClasses;
 using Backups.Tools.JobObjectsClasses;
+using Newtonsoft.Json;
 
 namespace Backups.Tools.Repository
 {
@@ -17,6 +18,7 @@ namespace Backups.Tools.Repository
             Root = root;
         }
 
+        [JsonProperty]
         protected string Root { get; }
 
         public Storage CopyObject(JobObject jobObject)

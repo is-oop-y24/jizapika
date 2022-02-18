@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Backups.Tools.BackUpClasses;
@@ -18,18 +19,52 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
             string backUpName)
             : base(jobObjects, algorithmExtra, id, repositoryExtra, backUpName)
         {
+            StoragesExtra = algorithmExtra.GetStorages(jobObjects, repositoryExtra, backUpName, RestorePointName);
+            AlgorithmExtra = algorithmExtra;
+            RepositoryExtra = repositoryExtra;
+            JobObjectsForSerialization = jobObjects;
+            BackUpName = backUpName;
         }
 
-        public new ImmutableList<StorageExtra> ImmutableStorages => Storages.ToImmutableList();
+        [JsonConstructor]
+        private RestorePointExtra(
+            JobObjects jobObjectsForSerialization,
+            IStorageAlgorithmExtra algorithmExtra,
+            uint id,
+            IRepositoryExtra repositoryExtra,
+            string backUpName,
+            List<StorageExtra> storagesExtra = null)
+        {
+            Id = id;
+            RestorePointName = "RestorePoint" + Id;
+            Time = DateTime.UtcNow;
+            StoragesExtra = storagesExtra ?? algorithmExtra.GetStorages(jobObjectsForSerialization, repositoryExtra, backUpName, RestorePointName);
+            AlgorithmExtra = algorithmExtra;
+            RepositoryExtra = repositoryExtra;
+            JobObjectsForSerialization = jobObjectsForSerialization;
+            BackUpName = backUpName;
+        }
+
+        [JsonIgnore]
+        public new ImmutableList<StorageExtra> ImmutableStorages => StoragesExtra.ToImmutableList();
         [JsonProperty]
-        protected new List<StorageExtra> Storages { get; set; }
+        private List<StorageExtra> StoragesExtra { get; set; }
+        [JsonProperty]
+        private IStorageAlgorithmExtra AlgorithmExtra { get; set; }
+
+        [JsonProperty]
+        private IRepositoryExtra RepositoryExtra { get; set; }
+        [JsonProperty]
+        private JobObjects JobObjectsForSerialization { get; set; }
+        [JsonProperty]
+        private string BackUpName { get; set; }
 
         public bool IsTheSameIdWith(RestorePointExtra restorePointExtra)
             => restorePointExtra.Id == Id;
 
         public void AddStorage(StorageExtra storage)
         {
-            Storages.Add(storage);
+            StoragesExtra.Add(storage);
         }
     }
 }

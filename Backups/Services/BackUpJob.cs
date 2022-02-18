@@ -17,9 +17,19 @@ namespace Backups.Services
             BackUp = new BackUp(backUpName);
         }
 
+        protected BackUpJob(IRepository repository, IStorageAlgorithm algorithm, string backUpName, JobObjects jobObjects = null)
+        {
+            Repository = repository;
+            Algorithm = algorithm;
+            jobObjects ??= new JobObjects();
+            JobObjects = jobObjects;
+            BackUp = new BackUp(backUpName);
+        }
+
         protected BackUp BackUp { get; set; }
         protected IRepository Repository { get; set; }
         protected IStorageAlgorithm Algorithm { get; set; }
+        [JsonProperty]
         protected JobObjects JobObjects { get; set; }
 
         public JobObject AddJobObject(string way)

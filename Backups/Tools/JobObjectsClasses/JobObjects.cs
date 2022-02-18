@@ -1,28 +1,38 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using Newtonsoft.Json;
 
 namespace Backups.Tools.JobObjectsClasses
 {
     public class JobObjects
     {
-        private List<JobObject> _jobObjects;
         public JobObjects()
         {
-            _jobObjects = new List<JobObject>();
+            JobObjectList = new List<JobObject>();
         }
 
-        public ImmutableList<JobObject> JobObjectsImmutableList => _jobObjects.ToImmutableList();
+        [JsonConstructor]
+        private JobObjects(List<JobObject> jobObjectList = null)
+        {
+            jobObjectList ??= new List<JobObject>();
+            JobObjectList = jobObjectList;
+        }
+
+        [JsonIgnore]
+        public ImmutableList<JobObject> JobObjectsImmutableList => JobObjectList.ToImmutableList();
+        [JsonProperty]
+        private List<JobObject> JobObjectList { get; }
 
         public JobObject AddJobObject(string jobObjectWay)
         {
             var jobObject = new JobObject(jobObjectWay);
-            _jobObjects.Add(jobObject);
+            JobObjectList.Add(jobObject);
             return jobObject;
         }
 
         public bool DeleteJobObject(JobObject unusedJobObject)
         {
-            return _jobObjects.Remove(unusedJobObject);
+            return JobObjectList.Remove(unusedJobObject);
         }
     }
 }

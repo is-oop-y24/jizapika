@@ -10,15 +10,11 @@ namespace BackupsExtra.Tools.ClearerClass
 {
     public class Deleter : IClearer
     {
-        [JsonProperty]
-        private IRepositoryExtra _repositoryExtra;
-
-        public Deleter(IRepositoryExtra repositoryExtra)
-        {
-            _repositoryExtra = repositoryExtra;
-        }
-
-        public void ClearRestoresPointExtra(ISelectingAlgorithm selectingAlgorithm, BackUpExtra backUpExtra, bool isSplitAlgorithm)
+        public void ClearRestoresPointExtra(
+            ISelectingAlgorithm selectingAlgorithm,
+            BackUpExtra backUpExtra,
+            IRepositoryExtra repositoryExtra,
+            bool isSplitAlgorithm)
         {
             var allRestorePoints = backUpExtra.ImmutableRestorePointExtraList.ToList();
             List<RestorePointExtra> deletingRestorePointExtras = selectingAlgorithm.GetRestorePointExtrasForClearing(allRestorePoints);
@@ -26,7 +22,7 @@ namespace BackupsExtra.Tools.ClearerClass
             {
                 foreach (StorageExtra storage in restorePointExtra.ImmutableStorages)
                 {
-                    _repositoryExtra.DeleteStorageExtraFromRepository(storage);
+                    repositoryExtra.DeleteStorageExtraFromRepository(storage);
                 }
 
                 if (!backUpExtra.CanDeleteRestorePoint(restorePointExtra))

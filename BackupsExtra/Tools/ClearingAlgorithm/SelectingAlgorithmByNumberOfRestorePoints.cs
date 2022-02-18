@@ -7,19 +7,18 @@ namespace BackupsExtra.Tools.ClearingAlgorithm
 {
     public class SelectingAlgorithmByNumberOfRestorePoints : ISelectingAlgorithm
     {
-        [JsonProperty]
-        private uint _quantityOfRestorePointExtra;
-
         public SelectingAlgorithmByNumberOfRestorePoints(uint quantityOfRestorePoint)
         {
-            _quantityOfRestorePointExtra = quantityOfRestorePoint;
-            if (_quantityOfRestorePointExtra == 0) throw new BackUpsExtraExceptions("The algorithm wants to clear all restore points.");
+            QuantityOfRestorePoint = quantityOfRestorePoint;
+            if (QuantityOfRestorePoint == 0) throw new BackUpsExtraExceptions("The algorithm wants to clear all restore points.");
         }
 
+        [JsonProperty]
+        private uint QuantityOfRestorePoint { get; }
         public List<RestorePointExtra> GetRestorePointExtrasForClearing(List<RestorePointExtra> restorePointExtraList)
         {
             var restorePointExtrasForClearing = new List<RestorePointExtra>();
-            if (restorePointExtraList.Count <= _quantityOfRestorePointExtra) return restorePointExtrasForClearing;
+            if (restorePointExtraList.Count <= QuantityOfRestorePoint) return restorePointExtrasForClearing;
             foreach (RestorePointExtra restorePointExtra in restorePointExtraList)
             {
                 restorePointExtrasForClearing.Add(restorePointExtra);
@@ -32,7 +31,7 @@ namespace BackupsExtra.Tools.ClearingAlgorithm
         public RestorePointExtra GetFirstNotClearingRestorePoint(List<RestorePointExtra> restorePointExtraList)
         {
             List<RestorePointExtra> restorePoints = GetRestorePointExtrasForClearing(restorePointExtraList);
-            foreach (RestorePointExtra restorePoint in restorePoints)
+            foreach (RestorePointExtra restorePoint in restorePointExtraList)
             {
                 if (!restorePoints.Contains(restorePoint)) return restorePoint;
             }

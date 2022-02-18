@@ -9,27 +9,27 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
 {
     public class StorageExtra : Storage
     {
-        [JsonProperty]
-        private uint _id;
-        [JsonProperty]
-        private List<string> _originalWays;
-
         public StorageExtra(string way, bool isZipping, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType, string compressingName, List<string> originalWays)
             : base(way, isZipping)
         {
-            _id = id;
+            Id = id;
             StorageAlgorithmExtraType = storageAlgorithmExtraType;
             CompressingName = compressingName;
-            _originalWays = originalWays;
+            OriginalWays = originalWays;
         }
 
         public StorageAlgorithmExtraType StorageAlgorithmExtraType { get; }
         public string CompressingName { get; }
-        public ImmutableList<string> ImmutableOriginalWays => _originalWays.ToImmutableList();
+        [JsonIgnore]
+        public ImmutableList<string> ImmutableOriginalWays => OriginalWays.ToImmutableList();
+        [JsonProperty]
+        private uint Id { get; }
+        [JsonProperty]
+        private List<string> OriginalWays { get; }
 
         public uint GetId()
         {
-            if (IsZipping && StorageAlgorithmExtraType == StorageAlgorithmExtraType.SplitType) return _id;
+            if (IsZipping && StorageAlgorithmExtraType == StorageAlgorithmExtraType.SplitType) return Id;
             throw new BackUpsExtraExceptions($"The storage have null id.");
         }
 

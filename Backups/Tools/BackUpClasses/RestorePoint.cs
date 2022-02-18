@@ -10,12 +10,7 @@ namespace Backups.Tools.BackUpClasses
 {
     public class RestorePoint
     {
-        public RestorePoint(
-            JobObjects jobObjects,
-            IStorageAlgorithm algorithm,
-            uint id,
-            IRepository repository,
-            string backUpName)
+        public RestorePoint(JobObjects jobObjects, IStorageAlgorithm algorithm, uint id, IRepository repository, string backUpName)
         {
             Id = id;
             RestorePointName = "RestorePoint" + Id;
@@ -23,10 +18,16 @@ namespace Backups.Tools.BackUpClasses
             Time = DateTime.UtcNow;
         }
 
-        public DateTime Time { get; protected set; }
-        public string RestorePointName { get; }
+        protected RestorePoint()
+        {
+        }
+
+        public DateTime Time { get; set; }
+        public string RestorePointName { get; set; }
+        [JsonIgnore]
         public ImmutableList<Storage> ImmutableStorages => Storages.ToImmutableList();
+        [JsonProperty]
         protected uint Id { get; set; }
-        protected List<Storage> Storages { get; set; }
+        private List<Storage> Storages { get; }
     }
 }

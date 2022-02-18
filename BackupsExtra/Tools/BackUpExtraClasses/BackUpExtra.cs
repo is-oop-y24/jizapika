@@ -11,37 +11,46 @@ namespace BackupsExtra.Tools.BackUpExtraClasses
 {
     public class BackUpExtra : BackUp
     {
-        [JsonProperty]
         private uint _restorePointExtraQuantity;
-        [JsonProperty]
-        private List<RestorePointExtra> _restorePointExtraList;
 
         public BackUpExtra(string name)
             : base(name)
         {
             _restorePointExtraQuantity = 1;
-            _restorePointExtraList = new List<RestorePointExtra>();
+            RestorePointExtraList = new List<RestorePointExtra>();
         }
 
+        [JsonConstructor]
+        private BackUpExtra(string name, List<RestorePointExtra> restorePointExtraList = null)
+            : base(name)
+        {
+            restorePointExtraList ??= new List<RestorePointExtra>();
+            RestorePointExtraList = restorePointExtraList;
+            _restorePointExtraQuantity = (uint)(restorePointExtraList.Count + 1);
+        }
+
+        [JsonIgnore]
         public ImmutableList<RestorePointExtra> ImmutableRestorePointExtraList =>
-            _restorePointExtraList.ToImmutableList();
+            RestorePointExtraList.ToImmutableList();
+        [JsonProperty]
+        private List<RestorePointExtra> RestorePointExtraList { get; set; }
 
         public RestorePointExtra MakeRestorePoint(JobObjects jobObjects, IRepositoryExtra repository, IStorageAlgorithmExtra algorithm)
         {
             var restorePoint = new RestorePointExtra(jobObjects, algorithm, _restorePointExtraQuantity, repository, Name);
-            _restorePointExtraList.Add(restorePoint);
+            RestorePointExtraList.Add(restorePoint);
             _restorePointExtraQuantity++;
             return restorePoint;
         }
 
         public bool CanDeleteRestorePoint(RestorePointExtra restorePointExtra)
-            => _restorePointExtraList.Contains(restorePointExtra);
+            => RestorePointExtraList.Contains(restorePointExtra);
 
         public void DeleteRestorePoint(RestorePointExtra restorePointExtra)
         {
-            if (!_restorePointExtraList.Contains(restorePointExtra))
+            if (!RestorePointExtraList.Contains(restorePointExtra))
                 throw new BackUpsExtraExceptions("restore point wasn't");
-            _restorePointExtraList.Remove(restorePointExtra);
+            RestorePointExtraList.Remove(restorePointExtra);
         }
     }
 }

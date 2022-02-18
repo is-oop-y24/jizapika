@@ -1,5 +1,6 @@
 using BackupsExtra.Tools.BackUpExtraClasses;
 using BackupsExtra.Tools.ClearingAlgorithm;
+using BackupsExtra.Tools.RepositoryExtra;
 
 namespace BackupsExtra.Tools.ClearerClass
 {
@@ -8,6 +9,7 @@ namespace BackupsExtra.Tools.ClearerClass
         public void ClearRestoresPointExtra(
             ISelectingAlgorithm selectingAlgorithm,
             BackUpExtra backUpExtra,
+            IRepositoryExtra repositoryExtra,
             bool isSplitAlgorithm);
     }
 }
