@@ -1,11 +1,11 @@
 using System;
 using System.Text;
+using IsuExtra.OldIsu.Exceptions;
 
-namespace Isu.Tools
+namespace IsuExtra.OldIsu.Tools
 {
     public class GroupName
     {
-        private StringBuilder _name;
         private CourseNumber _course;
         private uint _number;
         private int _maxCourseNum;
@@ -16,15 +16,16 @@ namespace Isu.Tools
             var crs = new CourseNumber(course, minCourseNum, maxCourseNum);
             _minCourseNum = minCourseNum;
             _maxCourseNum = maxCourseNum;
-            _name = new StringBuilder("M3" + Convert.ToString((course * 100) + number));
+            Name = new StringBuilder("M3" + Convert.ToString((course * 100) + number));
             _course = crs;
             _number = number;
         }
 
         public GroupName(string name, int minCourseNum = 1, int maxCourseNum = 9)
         {
-            if (name.Length != 5 || name[0] != 'M' || name[1] != '3') throw new IsuException("Неправильный формат группы.");
-            _name = new StringBuilder(name);
+            if (name.Length != 5 || name[0] != 'M' || name[1] != '3')
+                throw new IsuException("Неправильный формат группы.");
+            Name = new StringBuilder(name);
             try
             {
                 var crs = new CourseNumber(int.Parse(name.Substring(2, 1)), minCourseNum, maxCourseNum);
@@ -37,15 +38,11 @@ namespace Isu.Tools
             }
         }
 
-        public void ChangeNumber(uint number)
-        {
-            _name = new StringBuilder("M3" + Convert.ToString((_course.Get_num() * 100) + number));
-            _number = number;
-        }
+        protected StringBuilder Name { get; set; }
 
         public StringBuilder GetName()
         {
-            return _name;
+            return Name;
         }
 
         public int Course()

@@ -1,24 +1,20 @@
 using System;
 
-namespace Isu.Tools
+namespace IsuExtra.OldIsu.Tools
 {
     public class Student
     {
-        private int _id = 0;
+        private uint _id = 0;
         private string _name;
         private GroupName _groupname;
-        public Student(string name, GroupName groupname)
+        public Student(string name, GroupName groupname, uint id)
         {
             this._name = name;
             this._groupname = groupname;
-        }
-
-        public void Assign_id(int id)
-        {
             this._id = id;
         }
 
-        public int Get_id()
+        public uint Get_id()
         {
             if (_id == 0) Console.WriteLine($"Студент {_name} не значится ни в каком вузе.");
             return _id;

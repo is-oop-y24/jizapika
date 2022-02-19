@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Isu.Tools
+namespace IsuExtra.OldIsu.Exceptions
 {
     public class IsuException : Exception
     {

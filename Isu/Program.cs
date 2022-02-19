@@ -1,6 +1,6 @@
 ﻿namespace Isu
 {
-    internal class Program
+    public class Program
     {
         private static void Main()
         {
