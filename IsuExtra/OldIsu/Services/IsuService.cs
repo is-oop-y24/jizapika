@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Text;
-using Isu.Exceptions;
-using Isu.Tools;
+using IsuExtra.OldIsu.Exceptions;
+using IsuExtra.OldIsu.Tools;
 
-namespace Isu.Services
+namespace IsuExtra.OldIsu.Services
 {
     public class IsuService : IIsuService
     {

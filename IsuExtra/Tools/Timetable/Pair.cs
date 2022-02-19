@@ -1,5 +1,5 @@
 using System;
-using Isu.Tools;
+using IsuExtra.OldIsu.Tools;
 
 namespace IsuExtra.Tools.Timetable
 {

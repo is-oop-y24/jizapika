@@ -1,7 +1,7 @@
 using System;
 using System.Text;
-using Isu.Tools;
 using IsuExtra.Exceptions;
+using IsuExtra.OldIsu.Tools;
 using IsuExtra.Tools.MegaFacultyDirectory;
 
 namespace IsuExtra.Tools

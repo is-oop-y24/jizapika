@@ -1,6 +1,6 @@
-using Isu.Exceptions;
+using IsuExtra.OldIsu.Exceptions;
 using IsuExtra.Exceptions;
-using IsuExtra.Services;
+using IsuExtra.OldIsu.Services;
 using IsuExtra.Tools;
 using IsuExtra.Tools.MegaFacultyDirectory;
 using NUnit.Framework;
@@ -9,15 +9,6 @@ namespace IsuExtra.Tests
 {
     public class Tests
     {
-        private IIsuExtraService _isuService;
-
-        [SetUp]
-        public void Setup()
-        {
-            //TODO: implement
-            _isuService = null;
-        }
-
         [TestCase("Lev", "M3202")]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent(string name, string groupname)
         {
@@ -26,12 +17,10 @@ namespace IsuExtra.Tests
             GroupExtra group = isu.AddGroup(groupname, megaFacultyM);
             StudentExtra student = isu.AddStudent(group, name);
             group = isu.FindGroup(groupname);
-            bool t = false;
             foreach (StudentExtra curSt in group.ImmutableStudents)
             {
                 if (curSt == student)
                 {
-                    t = true;
                     break;
                 }
             }

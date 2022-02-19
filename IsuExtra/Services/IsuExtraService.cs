@@ -1,15 +1,14 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Isu.Exceptions;
-using Isu.Services;
-using Isu.Tools;
 using IsuExtra.Exceptions;
+using IsuExtra.OldIsu.Exceptions;
+using IsuExtra.OldIsu.Tools;
 using IsuExtra.Tools;
 using IsuExtra.Tools.MegaFacultyDirectory;
 using IsuExtra.Tools.Timetable;
 
-namespace IsuExtra.Services
+namespace IsuExtra.OldIsu.Services
 {
     public class IsuExtraService : IsuService, IIsuExtraService
     {

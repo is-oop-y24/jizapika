@@ -1,6 +1,6 @@
 using System;
 
-namespace Isu.Tools
+namespace IsuExtra.OldIsu.Tools
 {
     public class Student
     {

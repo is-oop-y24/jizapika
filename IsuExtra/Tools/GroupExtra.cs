@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Isu.Tools;
+using IsuExtra.OldIsu.Tools;
 using IsuExtra.Tools.Timetable;
 
 namespace IsuExtra.Tools

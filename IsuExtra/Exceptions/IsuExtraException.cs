@@ -1,5 +1,5 @@
 using System;
-using Isu.Exceptions;
+using IsuExtra.OldIsu.Exceptions;
 
 namespace IsuExtra.Exceptions
 {

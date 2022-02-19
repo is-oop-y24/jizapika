@@ -1,6 +1,6 @@
-using Isu.Exceptions;
+using IsuExtra.OldIsu.Exceptions;
 
-namespace Isu.Tools
+namespace IsuExtra.OldIsu.Tools
 {
     public class CourseNumber
     {
