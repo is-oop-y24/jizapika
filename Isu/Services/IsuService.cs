@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Isu.Tools;
 
@@ -153,11 +151,17 @@ namespace Isu.Services
 
         public void NewCourseLimit(int newMin, int newMax)
         {
-            if (newMin < 1) throw new IsuException($"Наименьшее значение курса не может быть {newMin}");
-            if (newMin > 9) throw new IsuException($"Наибольшее значение курса не может быть {newMax}");
+            switch (newMin)
+            {
+                case < 1:
+                    throw new IsuException($"Наименьшее значение курса не может быть {newMin}");
+                case > 9:
+                    throw new IsuException($"Наибольшее значение курса не может быть {newMax}");
+            }
+
             _maxNumCourse = newMax;
             _minNumCourse = newMin;
-            foreach (var curGr in _grData)
+            foreach (Group curGr in _grData)
             {
                 var course = new CourseNumber(curGr.Name().Course(), newMin, newMax);
                 curGr.ChangeCourseNumber(course);

@@ -7,6 +7,7 @@ namespace Isu.Tests
 {
     public class Tests
     {
+        [Test]
         [TestCase("Lev", "M3202")]
         public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent(string name, string groupname)
         {
@@ -38,6 +39,7 @@ namespace Isu.Tests
             });
         }
 
+        [Test]
         [TestCase("M32-2", 1, 4)]
         [TestCase("M3-02", 1, 4)]
         [TestCase("M4122", 1, 4)]
@@ -53,6 +55,7 @@ namespace Isu.Tests
             });
         }
 
+        [Test]
         [TestCase("M3202", "M3203")]
         public void TransferStudentToAnotherGroup_GroupChanged(string name1, string name2)
         {
