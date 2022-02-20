@@ -20,7 +20,11 @@ namespace BackupsExtra.Tools.ClearerClass
             mergingRestorePointExtras.Add(selectingAlgorithm.GetFirstNotClearingRestorePoint(allRestorePoints));
             for (int index = 1; index < mergingRestorePointExtras.Count; index++)
             {
-                repositoryExtra.MergeTwoRestorePointExtras(mergingRestorePointExtras[index - 1], mergingRestorePointExtras[index], backUpExtra, isSplitAlgorithm);
+                repositoryExtra.MergeTwoRestorePointExtras(
+                    mergingRestorePointExtras[index - 1],
+                    mergingRestorePointExtras[index],
+                    backUpExtra,
+                    isSplitAlgorithm);
             }
         }
     }

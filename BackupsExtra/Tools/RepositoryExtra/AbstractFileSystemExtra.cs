@@ -11,18 +11,22 @@ namespace BackupsExtra.Tools.RepositoryExtra
     public class AbstractFileSystemExtra : AbstractFileSystem, IRepositoryExtra
     {
         public List<StorageExtra> UnCompressingObjectsToOriginalLocation(StorageExtra storageExtra)
-            => storageExtra.ImmutableOriginalWays.Select(originalWay =>
-                    storageExtra.CanGetId()
-                        ? new StorageExtra(originalWay, false, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>())
-                        : new StorageExtra(originalWay, false, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>()))
-                .ToList();
+            => storageExtra.ImmutableOriginalWays.Select(originalWay => new StorageExtra(
+                originalWay,
+                false,
+                storageExtra.CanGetId() ? storageExtra.GetId() : 0,
+                storageExtra.StorageAlgorithmExtraType,
+                storageExtra.CompressingName,
+                new List<string>())).ToList();
 
         public List<StorageExtra> UnCompressingObjectsToDifferentLocation(StorageExtra storageExtra, string locationWay)
-            => storageExtra.ImmutableOriginalWays.Select(originalWay =>
-                        storageExtra.CanGetId()
-                    ? new StorageExtra(Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay)), false, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>())
-                    : new StorageExtra(Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay)), false, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, new List<string>()))
-                .ToList();
+            => storageExtra.ImmutableOriginalWays.Select(originalWay => new StorageExtra(
+                Path.Combine(locationWay, ObjectNameWithoutExtension(originalWay)),
+                false,
+                storageExtra.CanGetId() ? storageExtra.GetId() : 0,
+                storageExtra.StorageAlgorithmExtraType,
+                storageExtra.CompressingName,
+                new List<string>())).ToList();
 
         public void UnCompressingObject(string sourceFile, string targetDirectory)
         {
@@ -39,14 +43,22 @@ namespace BackupsExtra.Tools.RepositoryExtra
             => true;
 
         public StorageExtra CopyStorageExtra(StorageExtra storageExtra)
-            => storageExtra.CanGetId()
-                ? new StorageExtra(storageExtra.Way, storageExtra.IsZipping, storageExtra.GetId(), storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList())
-                : new StorageExtra(storageExtra.Way, storageExtra.IsZipping, 0, storageExtra.StorageAlgorithmExtraType, storageExtra.CompressingName, storageExtra.ImmutableOriginalWays.ToList());
+            => new (
+                storageExtra.Way,
+                storageExtra.IsZipping,
+                storageExtra.CanGetId() ? storageExtra.GetId() : 0,
+                storageExtra.StorageAlgorithmExtraType,
+                storageExtra.CompressingName,
+                storageExtra.ImmutableOriginalWays.ToList());
 
         public StorageExtra CompressingObjects(List<StorageExtra> storages, string backUpName, string restorePointName, string compressedName)
-            => storages[0].CanGetId()
-                ? new StorageExtra(string.Empty, true, storages[0].GetId(), storages[0].StorageAlgorithmExtraType, compressedName, storages.Select(storageExtra => storageExtra.Way).ToList())
-                : new StorageExtra(string.Empty, true, 0, storages[0].StorageAlgorithmExtraType, compressedName, storages.Select(storageExtra => storageExtra.Way).ToList());
+            => new (
+                string.Empty,
+                true,
+                storages[0].CanGetId() ? storages[0].GetId() : 0,
+                storages[0].StorageAlgorithmExtraType,
+                compressedName,
+                storages.Select(storageExtra => storageExtra.Way).ToList());
 
         public StorageExtra CopyObject(JobObject jobObject, uint id, StorageAlgorithmExtraType storageAlgorithmExtraType)
             => new StorageExtra(jobObject.Way, false, id, storageAlgorithmExtraType, jobObject.Way, new List<string>());
