@@ -20,8 +20,7 @@ namespace Banks.Services.UI.Commands.CommandPrint
             shouldQuit = false;
             try
             {
-                ImmutableList<Bank> immutableBanks = centralBank.Banks.ImmutableBanks;
-                foreach (Bank bank in immutableBanks)
+                foreach (Bank bank in centralBank.AllBanks)
                 {
                     new PrintConcreteBank(_userInterface, bank.Id).RunCommand(out shouldQuit, centralBank);
                 }

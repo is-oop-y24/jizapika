@@ -20,11 +20,11 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             try
             {
                 _userInterface.Write($"id: {_id}, "
-                                     + $"client name: {centralBank.Clients.FindClient(_id).Name}, "
-                                     + $"client surname: {centralBank.Clients.FindClient(_id).Surname}, "
-                                     + $"client passport: {centralBank.Clients.FindClient(_id).Passport}, "
-                                     + $"client address: {centralBank.Clients.FindClient(_id).Address}, "
-                                     + $"is client approved: {centralBank.Clients.FindClient(_id).IsApproved()}.");
+                                     + $"client name: {centralBank.ClientName(_id)}, "
+                                     + $"client surname: {centralBank.ClientSurname(_id)}, "
+                                     + $"client passport: {centralBank.ClientPassport(_id)}, "
+                                     + $"client address: {centralBank.ClientAddress(_id)}, "
+                                     + $"is client approved: {centralBank.IsClientApproved(_id)}.");
                 return true;
             }
             catch (Exception)

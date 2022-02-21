@@ -20,10 +20,10 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             shouldQuit = false;
             try
             {
-                TransactionType transactionType = centralBank.Transactions.FindTransaction(_id).Type();
+                TransactionType transactionType = centralBank.TransactionType(_id);
                 _userInterface.Write($"id: {_id}, "
                                      + $"transaction type: {transactionType}, "
-                                     + $"sum: {centralBank.Transactions.FindTransaction(_id).Ammount}.");
+                                     + $"ammount: {centralBank.TransactionAmmount(_id)}.");
                 return true;
             }
             catch (Exception)

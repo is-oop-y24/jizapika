@@ -32,9 +32,7 @@ namespace Banks.Services.UI.Commands.CommandMake
                 {
                     try
                     {
-                        translationSum =
-                            double.Parse(_userInterface.WriteAndRead(
-                                "Enter translation sum: "));
+                        translationSum = double.Parse(_userInterface.WriteAndRead("Enter translation sum: "));
                     }
                     catch (Exception)
                     {
@@ -63,7 +61,7 @@ namespace Banks.Services.UI.Commands.CommandMake
         {
             try
             {
-                centralBank.Clients.FindClient(uint.Parse(accountIdString));
+                centralBank.IsCorrectAccountId(uint.Parse(accountIdString));
                 return true;
             }
             catch (Exception)

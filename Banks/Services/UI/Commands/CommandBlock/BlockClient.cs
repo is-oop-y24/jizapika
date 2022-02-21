@@ -1,5 +1,4 @@
 using Banks.Exceptions;
-using Banks.Tools;
 using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandBlock
@@ -20,7 +19,7 @@ namespace Banks.Services.UI.Commands.CommandBlock
             try
             {
                 centralBank.BlockClient(_id);
-                _userInterface.Write($"Client {centralBank.Clients.FindClient(_id).Name} blocked.");
+                _userInterface.Write($"Client {centralBank.ClientName(_id)} blocked.");
                 return true;
             }
             catch (BankException)

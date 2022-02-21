@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Immutable;
 using Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete;
+using Banks.Services.UI.Commands.Helpers;
 using Banks.Tools.Accounts;
+using Banks.Tools.Banks;
 using Banks.Tools.CentralBankTools;
 using Banks.Tools.ClientPart;
 
@@ -26,10 +26,10 @@ namespace Banks.Services.UI.Commands.CommandPrint
                 {
                     case "client":
                         string clientIdString = _userInterface.WriteAndRead("Enter client id.");
-                        while (!IsUint(clientIdString) && IsCorrectBankId(centralBank, clientIdString))
+                        while (!IsCorrectIdHelper.IsUint(clientIdString) && IsCorrectIdHelper.IsCorrectBankId(centralBank, clientIdString))
                             clientIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
                         uint clientId = uint.Parse(clientIdString);
-                        foreach (Account account in centralBank.Clients.FindClient(clientId).ClientAccounts(centralBank.Accounts).ImmutableAccounts)
+                        foreach (Account account in centralBank.ClientAccounts(clientId).ImmutableAccounts)
                         {
                             new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
                         }
@@ -37,13 +37,12 @@ namespace Banks.Services.UI.Commands.CommandPrint
                         return true;
                     case "bank":
                         string bankIdString = _userInterface.WriteAndRead("Enter bank id.");
-                        while (!IsUint(bankIdString) && IsCorrectBankId(centralBank, bankIdString))
+                        while (!IsCorrectIdHelper.IsUint(bankIdString) && IsCorrectIdHelper.IsCorrectBankId(centralBank, bankIdString))
                             bankIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
                         uint bankId = uint.Parse(bankIdString);
-                        foreach (Client client in centralBank.Banks.FindBank(bankId).BankClients(centralBank.Clients)
-                            .ImmutableClients)
+                        foreach (Client client in centralBank.BankClients(bankId).ImmutableClients)
                         {
-                            foreach (Account account in centralBank.Clients.FindClient(client.Id).ClientAccounts(centralBank.Accounts).ImmutableAccounts)
+                            foreach (Account account in centralBank.ClientAccounts(client.Id).ImmutableAccounts)
                             {
                                 new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
                             }
@@ -51,10 +50,15 @@ namespace Banks.Services.UI.Commands.CommandPrint
 
                         return true;
                     case "all":
-                        ImmutableList<Account> immutableAccounts = centralBank.Accounts.ImmutableAccounts;
-                        foreach (Account account in immutableAccounts)
+                        foreach (Bank bank in centralBank.AllBanks)
                         {
-                            new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
+                            foreach (Client client in centralBank.BankClients(bank.Id).ImmutableClients)
+                            {
+                                foreach (Account account in centralBank.ClientAccounts(client.Id).ImmutableAccounts)
+                                {
+                                    new PrintConcreteAccount(_userInterface, account.Id).RunCommand(out shouldQuit, centralBank);
+                                }
+                            }
                         }
 
                         return true;
@@ -66,26 +70,6 @@ namespace Banks.Services.UI.Commands.CommandPrint
             }
 
             return true;
-        }
-
-        private bool IsUint(string command)
-        {
-            if (command.Split(' ').Length > 1) return false;
-            if (!uint.TryParse(command.Split(' ')[0], out _)) return false;
-            return true;
-        }
-
-        private bool IsCorrectBankId(CentralBank centralBank, string bankIdString)
-        {
-            try
-            {
-                centralBank.Clients.FindClient(uint.Parse(bankIdString));
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

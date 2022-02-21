@@ -1,4 +1,5 @@
 using System;
+using Banks.Services.UI.Commands.Helpers;
 using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandSet
@@ -16,34 +17,14 @@ namespace Banks.Services.UI.Commands.CommandSet
         {
             shouldQuit = false;
             string clientIdString = _userInterface.WriteAndRead("Enter client id.");
-            while (!IsUint(clientIdString) && IsCorrectClientId(centralBank, clientIdString))
+            while (!IsCorrectIdHelper.IsUint(clientIdString) && IsCorrectIdHelper.IsCorrectClientId(centralBank, clientIdString))
                 clientIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
             uint clientId = uint.Parse(clientIdString);
 
             string newClientAddress = _userInterface.WriteAndRead("Enter new address.");
-            centralBank.Clients.FindClient(clientId).Name = newClientAddress;
+            centralBank.ReaddressClient(clientId, newClientAddress);
 
             return true;
-        }
-
-        private bool IsUint(string command)
-        {
-            if (command.Split(' ').Length > 1) return false;
-            if (!uint.TryParse(command.Split(' ')[0], out _)) return false;
-            return true;
-        }
-
-        private bool IsCorrectClientId(CentralBank centralBank, string clientIdString)
-        {
-            try
-            {
-                centralBank.Clients.FindClient(uint.Parse(clientIdString));
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

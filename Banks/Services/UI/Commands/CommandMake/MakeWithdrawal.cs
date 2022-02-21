@@ -27,9 +27,7 @@ namespace Banks.Services.UI.Commands.CommandMake
                 {
                     try
                     {
-                        withdrawalSum =
-                            double.Parse(_userInterface.WriteAndRead(
-                                "Enter withdrawal sum: "));
+                        withdrawalSum = double.Parse(_userInterface.WriteAndRead("Enter withdrawal sum: "));
                     }
                     catch (Exception)
                     {
@@ -58,7 +56,7 @@ namespace Banks.Services.UI.Commands.CommandMake
         {
             try
             {
-                centralBank.Clients.FindClient(uint.Parse(accountIdString));
+                centralBank.IsCorrectAccountId(uint.Parse(accountIdString));
                 return true;
             }
             catch (Exception)

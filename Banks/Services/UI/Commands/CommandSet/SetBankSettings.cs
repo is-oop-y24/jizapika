@@ -18,7 +18,7 @@ namespace Banks.Services.UI.Commands.CommandSet
         {
             shouldQuit = false;
             string bankIdString = _userInterface.WriteAndRead("Enter bank id.");
-            while (!IsUint(bankIdString) && IsCorrectBankId(centralBank, bankIdString))
+            while (!IsCorrectIdHelper.IsUint(bankIdString) && IsCorrectIdHelper.IsCorrectBankId(centralBank, bankIdString))
                 bankIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
             uint bankId = uint.Parse(bankIdString);
 
@@ -51,26 +51,6 @@ namespace Banks.Services.UI.Commands.CommandSet
             }
 
             return true;
-        }
-
-        private bool IsUint(string command)
-        {
-            if (command.Split(' ').Length > 1) return false;
-            if (!uint.TryParse(command.Split(' ')[0], out _)) return false;
-            return true;
-        }
-
-        private bool IsCorrectBankId(CentralBank centralBank, string bankIdString)
-        {
-            try
-            {
-                centralBank.Banks.FindBank(uint.Parse(bankIdString));
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

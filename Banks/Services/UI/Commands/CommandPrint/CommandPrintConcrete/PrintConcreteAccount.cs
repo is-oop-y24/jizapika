@@ -20,10 +20,10 @@ namespace Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete
             shouldQuit = false;
             try
             {
-                AccountType accountType = centralBank.Accounts.FindAccount(_id).Type();
+                AccountType accountType = centralBank.AccountType(_id);
                 _userInterface.Write($"id: {_id}, "
                                      + $"account type: {accountType}, "
-                                     + $"sum: {centralBank.Accounts.FindAccount(_id).Sum}. ");
+                                     + $"sum: {centralBank.AccountSum(_id)}. ");
                 return true;
             }
             catch (Exception)
