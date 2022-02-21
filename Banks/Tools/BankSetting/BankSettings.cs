@@ -12,8 +12,8 @@ namespace Banks.Tools.BankSetting
             DepositSettings = depositSettings;
         }
 
-        public CreditAccountSettings CreditSettings { get; set; }
-        public DebitAccountSettings DebitSettings { get; set; }
-        public DepositAccountSettings DepositSettings { get; set; }
+        public CreditAccountSettings CreditSettings { get; }
+        public DebitAccountSettings DebitSettings { get; }
+        public DepositAccountSettings DepositSettings { get; }
     }
 }

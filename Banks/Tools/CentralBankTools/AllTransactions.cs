@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Transactions;
 using Banks.Exceptions;
 using Banks.Tools.Accounts;
+using Banks.Tools.Transactions;
 
-namespace Banks.Tools.Transactions
+namespace Banks.Tools.CentralBankTools
 {
     public class AllTransactions
     {
@@ -19,31 +19,38 @@ namespace Banks.Tools.Transactions
 
         public ImmutableList<Transaction> ImmutableTransactions => _transactions.ToImmutableList();
 
-        public WithdrawalTransaction AddWithdrawalTransaction(Account account, double sum)
+        public uint AddWithdrawalTransaction_ReturnID(Account account, double sum)
         {
             var transaction = new WithdrawalTransaction(account, _currentNumberId, sum);
             _transactions.Add(transaction);
             _currentNumberId++;
-            return transaction;
+            return transaction.Id;
         }
 
-        public ReplenishmentTransaction AddReplenishmentTransaction(Account account, double sum)
+        public uint AddReplenishmentTransaction_ReturnID(Account account, double sum)
         {
             var transaction = new ReplenishmentTransaction(account, _currentNumberId, sum);
             _transactions.Add(transaction);
             _currentNumberId++;
-            return transaction;
+            return transaction.Id;
         }
 
-        public TranslationTransaction AddTranslationTransaction(Account from, Account to, double sum)
+        public uint AddTranslationTransaction_ReturnID(Account from, Account to, double sum)
         {
             var transaction = new TranslationTransaction(from, to, _currentNumberId, sum);
             _transactions.Add(transaction);
             _currentNumberId++;
-            return transaction;
+            return transaction.Id;
         }
 
         public Transaction FindTransaction(uint id)
-            => _transactions.FirstOrDefault(transaction => transaction.Id == id);
+        {
+            if (!IsCorrectTransactionId(id))
+                throw new BankException("Transaction doesn't exist.");
+            return _transactions.FirstOrDefault(transaction => transaction.Id == id);
+        }
+
+        public bool IsCorrectTransactionId(uint transactionId)
+            => _transactions.Any(transaction => transaction.Id == transactionId);
     }
 }

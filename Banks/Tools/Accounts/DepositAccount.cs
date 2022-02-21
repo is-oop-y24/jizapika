@@ -1,5 +1,6 @@
 using Banks.Exceptions;
 using Banks.Tools.BankSetting.BankAccountsSettings;
+using Banks.Tools.CentralBankTools;
 using Banks.Tools.ClientPart;
 using Banks.Tools.Transactions;
 
@@ -23,9 +24,6 @@ namespace Banks.Tools.Accounts
             Sum = 0;
             Id = id;
         }
-
-        public new double Sum { get; internal set; }
-        public new uint Id { get; }
 
         public override void MakeWithdrawal(double withdrawalSum)
         {
@@ -58,9 +56,10 @@ namespace Banks.Tools.Accounts
 
         public override void WaitDay(uint currentDate)
         {
+            int daysOnMonth = 30;
             if (currentDate > _dateOfCreation + _settings.DaysDuration) return;
-            _accumulatedSum += _settings.MonthlyPercentCommission(Sum) / 30 * Sum;
-            if ((currentDate == _dateOfCreation + _settings.DaysDuration) || (currentDate - _dateOfCreation) % 30 == 0)
+            _accumulatedSum += _settings.MonthlyPercentCommission(Sum) / daysOnMonth * Sum;
+            if (currentDate == _dateOfCreation + _settings.DaysDuration || (currentDate - _dateOfCreation) % daysOnMonth == 0)
             {
                 Sum += _accumulatedSum;
                 _accumulatedSum = 0;

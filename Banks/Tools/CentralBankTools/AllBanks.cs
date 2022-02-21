@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Banks.Exceptions;
+using Banks.Tools.Banks;
 using Banks.Tools.BankSetting;
 
-namespace Banks.Tools.Banks
+namespace Banks.Tools.CentralBankTools
 {
     public class AllBanks
     {
@@ -17,29 +18,27 @@ namespace Banks.Tools.Banks
         }
 
         public ImmutableList<Bank> ImmutableBanks => _banks.ToImmutableList();
-        public Bank AddBank(BankSettings bankSettings, string name)
+        public uint AddBank_ReturnID(BankSettings bankSettings, string name)
         {
             var bank = new Bank(bankSettings, name, _currentNumberId);
             _banks.Add(bank);
             _currentNumberId++;
-            return bank;
+            return bank.Id;
         }
 
         public Bank FindBank(uint id)
         {
-            foreach (Bank bank in _banks.Where(bank => bank.Id == id))
-            {
-                return bank;
-            }
-
-            throw new BankException($"Not correct id");
+            if (!IsCorrectBankId(id))
+                throw new BankException("Bank doesn't exist.");
+            return _banks.FirstOrDefault(bank => bank.Id == id);
         }
 
-        public Bank RenameBank(uint id, string newName)
+        public void RenameBank(uint id, string newName)
         {
-            Bank bank = FindBank(id);
-            bank.Name = newName;
-            return bank;
+            FindBank(id).Name = newName;
         }
+
+        public bool IsCorrectBankId(uint bankId)
+            => _banks.Any(bank => bank.Id == bankId);
     }
 }

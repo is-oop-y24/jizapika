@@ -1,7 +1,6 @@
 using System;
 using Banks.Services.UI.Commands.Helpers;
-using Banks.Tools;
-using Banks.Tools.ClientPart;
+using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandCreate
 {
@@ -23,16 +22,16 @@ namespace Banks.Services.UI.Commands.CommandCreate
                 while (!IsUint(bankIdString) && IsCorrectBankId(centralBank, bankIdString))
                     bankIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
                 uint bankId = uint.Parse(bankIdString);
-                Client thisClient = centralBank.AddClient(
-                    centralBank.Banks.FindBank(bankId),
+                uint thisClient = centralBank.AddClient_ReturnID(
+                    bankId,
                     ClientInfoHelper.ClientName(_userInterface),
                     ClientInfoHelper.ClientSurname(_userInterface));
                 string doWantPassport =
                     _userInterface.WriteAndRead("Do you want to add passport? Enter Y if yes.");
                 string doWantAddress =
                     _userInterface.WriteAndRead("Do you want to add address? Enter Y if yes.");
-                if (doWantPassport == "Y") thisClient.Passport = ClientInfoHelper.ClientPassport(_userInterface);
-                if (doWantAddress == "Y") thisClient.Address = ClientInfoHelper.ClientAddress(_userInterface);
+                if (doWantPassport == "Y") centralBank.RepassportClient(thisClient, ClientInfoHelper.ClientPassport(_userInterface));
+                if (doWantAddress == "Y") centralBank.ReaddressClient(thisClient, ClientInfoHelper.ClientAddress(_userInterface));
                 return true;
             }
             catch (Exception)
@@ -52,8 +51,7 @@ namespace Banks.Services.UI.Commands.CommandCreate
         {
             try
             {
-                centralBank.Clients.FindClient(uint.Parse(bankIdString));
-                return true;
+                return centralBank.IsCorrectBankId(uint.Parse(bankIdString));
             }
             catch (Exception)
             {

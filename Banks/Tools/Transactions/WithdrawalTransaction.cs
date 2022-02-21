@@ -15,26 +15,18 @@ namespace Banks.Tools.Transactions
             Ammount = sum;
         }
 
-        public new uint Id { get; }
-
-        public new double Ammount { get; }
-
         public override void MakeIt()
         {
-            if (!_isComleted)
-            {
-                _isComleted = true;
-                _from.MakeWithdrawal(Ammount);
-            }
+            if (_isComleted) return;
+            _isComleted = true;
+            _from.MakeWithdrawal(Ammount);
         }
 
         public override void CancelIt()
         {
-            if (_isComleted)
-            {
-                _isComleted = false;
-                _from.CancelMakeWithdrawal(Ammount);
-            }
+            if (!_isComleted) return;
+            _isComleted = false;
+            _from.CancelMakeWithdrawal(Ammount);
         }
 
         public override bool IsAccountId(uint id)

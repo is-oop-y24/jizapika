@@ -1,6 +1,6 @@
 using System;
 using Banks.Exceptions;
-using Banks.Tools;
+using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandCreate
 {
@@ -32,15 +32,15 @@ namespace Banks.Services.UI.Commands.CommandCreate
                     switch (accountType)
                     {
                         case "credit":
-                            centralBank.AddCreditAccount(centralBank.Clients.FindClient(clientId));
+                            centralBank.AddCreditAccount_ReturnID(clientId);
                             flagOpened = false;
                             break;
                         case "debit":
-                            centralBank.AddDebitAccount(centralBank.Clients.FindClient(clientId));
+                            centralBank.AddDebitAccount_ReturnID(clientId);
                             flagOpened = false;
                             break;
                         case "deposit":
-                            centralBank.AddDepositAccount(centralBank.Clients.FindClient(clientId));
+                            centralBank.AddDepositAccount_ReturnID(clientId);
                             flagOpened = false;
                             break;
                         default:
@@ -69,8 +69,7 @@ namespace Banks.Services.UI.Commands.CommandCreate
         {
             try
             {
-                centralBank.Clients.FindClient(uint.Parse(clientIdString));
-                return true;
+                return centralBank.IsCorrectClientId(uint.Parse(clientIdString));
             }
             catch (Exception)
             {

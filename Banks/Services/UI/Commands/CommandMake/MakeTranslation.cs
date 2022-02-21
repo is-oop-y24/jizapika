@@ -1,5 +1,5 @@
 using System;
-using Banks.Tools;
+using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandMake
 {
@@ -42,10 +42,7 @@ namespace Banks.Services.UI.Commands.CommandMake
                     }
                 }
 
-                centralBank.AddTranslation(
-                    centralBank.Accounts.FindAccount(fromAccountId),
-                    centralBank.Accounts.FindAccount(toAccountId),
-                    translationSum).MakeIt();
+                centralBank.MakeNewTranslation(fromAccountId, toAccountId, translationSum);
 
                 return true;
             }

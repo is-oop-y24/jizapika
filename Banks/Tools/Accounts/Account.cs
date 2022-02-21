@@ -1,11 +1,12 @@
+using Banks.Tools.CentralBankTools;
 using Banks.Tools.Transactions;
 
 namespace Banks.Tools.Accounts
 {
     public abstract class Account
     {
-        public double Sum { get; internal set; }
-        public uint Id { get; }
+        public double Sum { get; protected set; }
+        public uint Id { get; protected set; }
         public abstract void MakeWithdrawal(double withdrawalSum);
         public abstract void MakeReplenishment(double replenishmentSum);
         public abstract void MakeTranslationTo(Account otherAccount, double translationSum);

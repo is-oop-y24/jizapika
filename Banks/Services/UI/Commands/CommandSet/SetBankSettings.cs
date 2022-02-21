@@ -1,7 +1,7 @@
 using System;
 using Banks.Services.UI.Commands.Helpers;
-using Banks.Tools;
 using Banks.Tools.BankSetting.BankAccountsSettings;
+using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandSet
 {
@@ -22,13 +22,13 @@ namespace Banks.Services.UI.Commands.CommandSet
                 bankIdString = _userInterface.WriteAndRead("Not correct. Please, try again");
             uint bankId = uint.Parse(bankIdString);
 
-            bool flag = true;
-            while (flag)
+            bool isCorrectCommand = false;
+            while (!isCorrectCommand)
             {
                 string typeSettings =
                     _userInterface.WriteAndRead(
                         "What's type of settings do you want to set? ( credit / debit / deposit )");
-                flag = false;
+                isCorrectCommand = true;
                 switch (typeSettings)
                 {
                     case "credit":
@@ -45,7 +45,7 @@ namespace Banks.Services.UI.Commands.CommandSet
                         break;
                     default:
                         _userInterface.Write("Not correct command. Try again.");
-                        flag = true;
+                        isCorrectCommand = false;
                         break;
                 }
             }

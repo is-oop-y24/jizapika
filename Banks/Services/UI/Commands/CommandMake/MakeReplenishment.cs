@@ -1,5 +1,5 @@
 using System;
-using Banks.Tools;
+using Banks.Tools.CentralBankTools;
 
 namespace Banks.Services.UI.Commands.CommandMake
 {
@@ -37,7 +37,7 @@ namespace Banks.Services.UI.Commands.CommandMake
                     }
                 }
 
-                centralBank.AddReplenishment(centralBank.Accounts.FindAccount(accountId), replenishmentSum).MakeIt();
+                centralBank.MakeNewReplenishment(accountId, replenishmentSum);
 
                 return true;
             }

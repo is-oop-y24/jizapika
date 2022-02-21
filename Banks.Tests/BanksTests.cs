@@ -1,10 +1,7 @@
 using Banks.Exceptions;
-using Banks.Tools;
-using Banks.Tools.Accounts;
-using Banks.Tools.Banks;
 using Banks.Tools.BankSetting;
 using Banks.Tools.BankSetting.BankAccountsSettings;
-using Banks.Tools.ClientPart;
+using Banks.Tools.CentralBankTools;
 using NUnit.Framework;
 
 namespace Banks.Tests
@@ -22,22 +19,21 @@ namespace Banks.Tests
             typicalDepositAccountSettings.AddCommissionLimit(5000, 0.0035);
             typicalDepositAccountSettings.AddCommissionLimit(50000, 0.004);
             typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
-            var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
-                typicalDepositAccountSettings);
-            Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-            Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-            lev.Address = "Vyazemskiy";
-            lev.Passport = "228337";
-            CreditAccount credit = centralBank.AddCreditAccount(lev);
-            DebitAccount debit = centralBank.AddDebitAccount(lev);
-            DepositAccount deposit = centralBank.AddDepositAccount(lev);
-            credit.MakeWithdrawal(1000);
-            debit.MakeReplenishment(50000);
-            deposit.MakeReplenishment(4970);
+            var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings, typicalDepositAccountSettings);
+            uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+            uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+            centralBank.ReaddressClient(levId, "Vyazemskiy");
+            centralBank.RepassportClient(levId, "228337");
+            uint creditAccountId = centralBank.AddCreditAccount_ReturnID(levId);
+            uint debitAccountId = centralBank.AddDebitAccount_ReturnID(levId);
+            uint depositAccountId = centralBank.AddDepositAccount_ReturnID(levId);
+            centralBank.MakeNewWithdrawal(creditAccountId, 1000);
+            centralBank.MakeNewReplenishment(debitAccountId, 50000);
+            centralBank.MakeNewReplenishment(depositAccountId, 4970);
             centralBank.AddDays(120);
-            Assert.AreEqual(-1000 - 120 * 100, credit.Sum, 0.0001);
-            Assert.AreEqual(50000 * 1.003 * 1.003 * 1.003 * 1.003, debit.Sum, 0.0001);
-            Assert.AreEqual(4970 * 1.0035 * 1.0035 * 1.004 * (1 + 0.004 / 30 * 10), deposit.Sum, 0.0001);
+            Assert.AreEqual(-1000 - 120 * 100, centralBank.AccountSum(creditAccountId), 0.0001);
+            Assert.AreEqual(50000 * 1.003 * 1.003 * 1.003 * 1.003, centralBank.AccountSum(debitAccountId), 0.0001);
+            Assert.AreEqual(4970 * 1.0035 * 1.0035 * 1.004 * (1 + 0.004 / 30 * 10), centralBank.AccountSum(depositAccountId), 0.0001);
         }
 
         [Test]
@@ -54,12 +50,12 @@ namespace Banks.Tests
                 typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
                 var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
                     typicalDepositAccountSettings);
-                Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-                Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-                lev.Address = "Vyazemskiy";
-                lev.Passport = "228337";
-                CreditAccount credit = centralBank.AddCreditAccount(lev);
-                credit.MakeWithdrawal(100000);
+                uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+                uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+                centralBank.ReaddressClient(levId, "Vyazemskiy");
+                centralBank.RepassportClient(levId, "228337");
+                uint creditAccountId = centralBank.AddCreditAccount_ReturnID(levId);
+                centralBank.MakeNewWithdrawal(creditAccountId, 100000);
             });
         }
 
@@ -77,12 +73,12 @@ namespace Banks.Tests
                 typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
                 var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
                     typicalDepositAccountSettings);
-                Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-                Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-                lev.Address = "Vyazemskiy";
-                lev.Passport = "228337";
-                DebitAccount debit = centralBank.AddDebitAccount(lev);
-                debit.MakeWithdrawal(1);
+                uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+                uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+                centralBank.ReaddressClient(levId, "Vyazemskiy");
+                centralBank.RepassportClient(levId, "228337");
+                uint debitAccountId = centralBank.AddDebitAccount_ReturnID(levId);
+                centralBank.MakeNewWithdrawal(debitAccountId, 1);
             });
         }
 
@@ -100,13 +96,13 @@ namespace Banks.Tests
                 typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
                 var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
                     typicalDepositAccountSettings);
-                Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-                Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-                lev.Address = "Vyazemskiy";
-                lev.Passport = "228337";
-                DepositAccount deposit = centralBank.AddDepositAccount(lev);
-                deposit.MakeReplenishment(100000);
-                deposit.MakeWithdrawal(1);
+                uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+                uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+                centralBank.ReaddressClient(levId, "Vyazemskiy");
+                centralBank.RepassportClient(levId, "228337");
+                uint depositAccountId = centralBank.AddDepositAccount_ReturnID(levId);
+                centralBank.MakeNewReplenishment(depositAccountId, 100000);
+                centralBank.MakeNewWithdrawal(depositAccountId, 1);
             });
         }
 
@@ -120,28 +116,27 @@ namespace Banks.Tests
             typicalDepositAccountSettings.AddCommissionLimit(5000, 0.0035);
             typicalDepositAccountSettings.AddCommissionLimit(50000, 0.004);
             typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
-            var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
-                typicalDepositAccountSettings);
-            Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-            Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-            lev.Address = "Vyazemskiy";
-            lev.Passport = "228337";
-            CreditAccount creditLev = centralBank.AddCreditAccount(lev);
-            DebitAccount debitLev = centralBank.AddDebitAccount(lev);
-            debitLev.MakeReplenishment(50000);
-            Client timur = centralBank.AddClient(sberbank, "Timur", "Syrma");
-            timur.Address = "Vyazemskiy";
-            timur.Passport = "337228";
-            CreditAccount creditTimur = centralBank.AddCreditAccount(timur);
-            DepositAccount debitTimur = centralBank.AddDepositAccount(timur);
-            creditTimur.MakeReplenishment(50000);
-            debitTimur.MakeReplenishment(50000);
-            creditLev.MakeTranslationTo(creditTimur, 30000);
-            debitLev.MakeTranslationTo(debitTimur, 30000);
-            Assert.AreEqual(0 - 30000, creditLev.Sum, 0.0001);
-            Assert.AreEqual(50000 - 30000, debitLev.Sum, 0.0001);
-            Assert.AreEqual(50000 + 30000, creditTimur.Sum, 0.0001);
-            Assert.AreEqual(50000 + 30000, debitTimur.Sum, 0.0001);
+            var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings, typicalDepositAccountSettings);
+            uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+            uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+            centralBank.ReaddressClient(levId, "Vyazemskiy");
+            centralBank.RepassportClient(levId, "228337");
+            uint creditLevId = centralBank.AddCreditAccount_ReturnID(levId);
+            uint debitLevId = centralBank.AddDebitAccount_ReturnID(levId);
+            centralBank.MakeNewReplenishment(debitLevId, 50000);
+            uint timurId = centralBank.AddClient_ReturnID(sberbankId, "Timur", "Syrma");
+            centralBank.ReaddressClient(timurId, "Vyazemskiy");
+            centralBank.RepassportClient(timurId, "228337");
+            uint creditTimurId = centralBank.AddCreditAccount_ReturnID(timurId);
+            uint debitTimurId = centralBank.AddDebitAccount_ReturnID(timurId);
+            centralBank.MakeNewReplenishment(creditTimurId, 50000);
+            centralBank.MakeNewReplenishment(debitTimurId, 50000);
+            centralBank.MakeNewTranslation(creditLevId, creditTimurId, 30000);
+            centralBank.MakeNewTranslation(debitLevId, debitTimurId, 30000);
+            Assert.AreEqual(0 - 30000, centralBank.AccountSum(creditLevId), 0.0001);
+            Assert.AreEqual(50000 - 30000, centralBank.AccountSum(debitLevId), 0.0001);
+            Assert.AreEqual(50000 + 30000, centralBank.AccountSum(creditTimurId), 0.0001);
+            Assert.AreEqual(50000 + 30000, centralBank.AccountSum(debitTimurId), 0.0001);
         }
 
         [Test]
@@ -158,10 +153,10 @@ namespace Banks.Tests
                 typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
                 var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
                     typicalDepositAccountSettings);
-                Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-                Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-                CreditAccount credit = centralBank.AddCreditAccount(lev);
-                credit.MakeWithdrawal(1000);
+                uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+                uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+                uint creditAccountId = centralBank.AddCreditAccount_ReturnID(levId);
+                centralBank.MakeNewWithdrawal(creditAccountId, 1000);
             });
             ;
         }
@@ -180,10 +175,10 @@ namespace Banks.Tests
                 typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
                 var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
                     typicalDepositAccountSettings);
-                Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-                Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-                DebitAccount debit = centralBank.AddDebitAccount(lev);
-                debit.MakeWithdrawal(1000);
+                uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+                uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+                uint debitAccountId = centralBank.AddDebitAccount_ReturnID(levId);
+                centralBank.MakeNewWithdrawal(debitAccountId, 1000);
             });;
         }
 
@@ -201,10 +196,10 @@ namespace Banks.Tests
                 typicalDepositAccountSettings.AddCommissionLimit(5000000, 0.0045);
                 var typicalBankSettings = new BankSettings(typicalCreditAccountSettings, typicalDebitAccountSettings,
                     typicalDepositAccountSettings);
-                Bank sberbank = centralBank.AddBank(typicalBankSettings, "Sberbank");
-                Client lev = centralBank.AddClient(sberbank, "Lev", "Chechulin");
-                DepositAccount deposit = centralBank.AddDepositAccount(lev);
-                deposit.MakeWithdrawal(1000);
+                uint sberbankId = centralBank.AddBank_ReturnID(typicalBankSettings, "Sberbank");
+                uint levId = centralBank.AddClient_ReturnID(sberbankId, "Lev", "Chechulin");
+                uint depositAccountId = centralBank.AddDepositAccount_ReturnID(levId);
+                centralBank.MakeNewWithdrawal(depositAccountId, 1000);
             });;
         }
     }

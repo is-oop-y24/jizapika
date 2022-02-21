@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Immutable;
 using Banks.Services.UI.Commands.CommandPrint.CommandPrintConcrete;
-using Banks.Tools;
-using Banks.Tools.Banks;
+using Banks.Tools.CentralBankTools;
 using Banks.Tools.ClientPart;
 
 namespace Banks.Services.UI.Commands.CommandPrint
