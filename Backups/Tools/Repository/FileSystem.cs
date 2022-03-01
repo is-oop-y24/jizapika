@@ -5,18 +5,21 @@ using System.IO.Compression;
 using Backups.Exceptions;
 using Backups.Tools.BackUpClasses;
 using Backups.Tools.JobObjectsClasses;
+using Newtonsoft.Json;
 
 namespace Backups.Tools.Repository
 {
     public class FileSystem : IRepository
     {
-        private string _root;
         public FileSystem(string root)
         {
             if (!Directory.Exists(root))
                 throw new BackUpsExceptions($"Not correct directory name: {root}");
-            _root = root;
+            Root = root;
         }
+
+        [JsonProperty]
+        protected string Root { get; }
 
         public Storage CopyObject(JobObject jobObject)
         {
@@ -29,7 +32,7 @@ namespace Backups.Tools.Repository
             List<Storage> storages, string backUpName, string restorePointName, string compressedName)
         {
             string fakeDirectoryName = PackStoragesToRestorePoint(storages, backUpName, restorePointName + "_fake");
-            string normalDirectoryName = Path.Combine(_root, backUpName, restorePointName);
+            string normalDirectoryName = Path.Combine(Root, backUpName, restorePointName);
             Directory.CreateDirectory(normalDirectoryName);
             string compressedFile = Path.Combine(normalDirectoryName, compressedName) + ".zip";
             ZipFile.CreateFromDirectory(fakeDirectoryName, compressedFile);
@@ -49,10 +52,10 @@ namespace Backups.Tools.Repository
             }
         }
 
-        private string PackStoragesToRestorePoint(
+        protected string PackStoragesToRestorePoint(
             List<Storage> storages, string backUpName, string restorePointName)
         {
-            string directoryWay = Path.Combine(_root, backUpName, restorePointName);
+            string directoryWay = Path.Combine(Root, backUpName, restorePointName);
             Directory.CreateDirectory(directoryWay);
             foreach (Storage storage in storages)
             {
@@ -62,7 +65,7 @@ namespace Backups.Tools.Repository
             return directoryWay;
         }
 
-        private string ObjectNameWithExtension(string way)
+        protected string ObjectNameWithExtension(string way)
         {
             try
             {
