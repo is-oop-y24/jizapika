@@ -1,5 +1,4 @@
-﻿using System;
-
+using System;
 namespace IsuExtra.OldIsu.Exceptions
 {
     public class IsuException : Exception
