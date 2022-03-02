@@ -1,9 +1,15 @@
 ﻿namespace Banks.Tools.Transactions
 {
-    public enum TransactionType
+    /// <summary> TransactionType. </summary>
+    public enum TransactionType : uint
     {
-        Replenishment,
-        Translation,
-        Withdrawal,
+        /// <summary> ReplenishmentTransaction </summary>
+        Replenishment = 1,
+
+        /// <summary> TranslationTransaction </summary>
+        Translation = 2,
+
+        /// <summary> WithdrawalTransaction </summary>
+        Withdrawal = 3,
     }
 }

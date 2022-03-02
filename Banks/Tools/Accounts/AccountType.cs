@@ -1,9 +1,15 @@
 ﻿namespace Banks.Tools.Accounts
 {
-    public enum AccountType
+    /// <summary> AccountType. </summary>
+    public enum AccountType : uint
     {
-        Credit,
-        Debit,
-        Deposit,
+        /// <summary> CreditAccount </summary>
+        Credit = 1,
+
+        /// <summary> DebitAccount </summary>
+        Debit = 2,
+
+        /// <summary> DepositAccount </summary>
+        Deposit = 3,
     }
 }
