@@ -4,17 +4,9 @@ namespace Reports.DAL.Entities
 {
     public class Report
     {
-        public Report(string reportInfo, DateTime deadLineTime)
-        {
-            ReportInfo = reportInfo;
-            DeadLineTime = deadLineTime;
-        }
-
-        public Report()
-        {
-        }
-
-        public DateTime DeadLineTime { get; }
-        public string ReportInfo { get; }
+        public Report() { }
+        public DateTime DeadLineTime { get; set; }
+        public string ReportInfo { get; set; }
+        public Guid Id { get; set; }
     }
 }

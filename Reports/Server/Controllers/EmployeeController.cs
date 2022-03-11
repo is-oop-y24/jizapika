@@ -22,7 +22,7 @@ namespace Reports.Server.Controllers
 
         [HttpPost]
         [Route("/employees/creationTeamLead")]
-        public async Task<Employee> CreateTeamLeadAsync([FromQuery] [Required] string name)
+        public async Task<Employee> CreateTeamLeadAsync([FromQuery][Required] string name)
         {
             return await _service.CreateNewTeamLeadAsync(name);
         }
@@ -36,9 +36,9 @@ namespace Reports.Server.Controllers
 
         [HttpGet]
         [Route("/employees/getAll")]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
-            IEnumerable<Employee> result = _service.GetAll();
+            IEnumerable<Employee> result = await _service.GetAllAsync();
             if (result != null)
             {
                 return Ok(result);
@@ -48,8 +48,8 @@ namespace Reports.Server.Controllers
         }
 
         [HttpGet]
-        [Route("/employees/find")]
-        public async Task<IActionResult> Find([FromQuery][Required] Guid id)
+        [Route("/employees/findById")]
+        public async Task<IActionResult> Find([FromQuery] [Required] Guid id)
         {
             if (id == Guid.Empty) return StatusCode((int) HttpStatusCode.BadRequest);
             Employee result = await _service.GetByIdAsync(id);
@@ -59,6 +59,44 @@ namespace Reports.Server.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpGet]
+        [Route("/employees/findByName")]
+        public async Task<IActionResult> Find([FromQuery][Required] string name)
+        {
+            Employee result = await _service.GetByNameAsync(name);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("/employees/deleteById")]
+        public async Task<IActionResult> DeleteByIdAsync([FromQuery][Required] Guid id)
+        {
+            await _service.DeleteByIdAsync(id);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("/employees/deleteByName")]
+        public async Task<IActionResult> DeleteByNameAsync([FromQuery][Required] string name)
+        {
+            await _service.DeleteByNameAsync(name);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("/employees/updateSupervisorAsync")]
+        public async Task<IActionResult> UpdateSupervisorAsync([FromQuery][Required] Guid updatingEmployeeId,
+            [FromQuery][Required] Guid newSupervisorId)
+        {
+            await _service.UpdateSupervisorAsync(updatingEmployeeId, newSupervisorId);
+            return Ok();
         }
     }
 }

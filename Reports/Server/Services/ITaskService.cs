@@ -7,17 +7,17 @@ namespace Reports.Server.Services
 {
     public interface ITaskService
     {
-        List<TaskModel> GetAll();
+        Task<IEnumerable<TaskModel>> GetAllAsync();
+        
+        Task<TaskModel> GetByIdAsync(Guid id);
+        
+        IEnumerable<TaskModel> GetByCreationTime(string creationDate);
 
-        TaskModel GetById(Guid id);
+        IEnumerable<TaskModel> GetByLastChangeTime(string changeDate);
 
-        TaskModel GetByCreationTime(string creationDate);
+        IEnumerable<TaskModel> GetAssignedByEmployeeId(Guid employeeId);
 
-        TaskModel GetByLastChangeTime(string changeDate);
-
-        List<TaskModel> GetAssignedByEmployeeId(Guid employeeId);
-
-        List<TaskModel> GetChangedByEmployeeId(Guid employeeId);
+        IEnumerable<TaskModel> GetChangedByEmployeeId(Guid employeeId);
         
         Task<TaskModel> CreateAsync(string name, string text, Guid assignedUserId);
         
@@ -27,6 +27,6 @@ namespace Reports.Server.Services
         
         Task ChangeAssignedEmployee(Guid newAssignedEmployeeId, Guid taskId);
 
-        List<TaskModel> GetAllSubordinatesTasks(Guid employeeId);
+        IEnumerable<TaskModel> GetAllSubordinatesTasks(Guid employeeId);
     }
 }

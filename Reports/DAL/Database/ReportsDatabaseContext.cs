@@ -20,12 +20,9 @@ namespace Reports.DAL.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().HasKey(employee => employee.Id);
-            modelBuilder.Entity<TaskModel>()
-                .HasNoKey();
-            modelBuilder.Entity<Report>()
-                .HasNoKey();
-            modelBuilder.Entity<Comment>()
-                .HasNoKey();
+            modelBuilder.Entity<TaskModel>().HasKey(task => task.Id);
+            modelBuilder.Entity<Report>().HasKey(report => report.Id);
+            modelBuilder.Entity<Comment>().HasKey(comment => comment.Id);
         }
     }
 }
