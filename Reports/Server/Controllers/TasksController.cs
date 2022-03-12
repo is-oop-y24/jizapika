@@ -29,20 +29,6 @@ namespace Reports.Server.Controllers
             return await _service.CreateAsync(name, text, assignedEmployeeId);
         }
 
-        /*[HttpPost]
-        [Route("/employees/creationTeamLead")]
-        public async Task<Employee> CreateTeamLeadAsync([FromQuery][Required] string name)
-        {
-            return await _service.CreateNewTeamLeadAsync(name);
-        }
-
-        [HttpPost]
-        [Route("/employees/creation")]
-        public async Task<Employee> CreateAsync([FromQuery][Required] string name, [FromQuery][Required] Guid supervisorId)
-        {
-            return await _service.CreateAsync(name, supervisorId);
-        }*/
-
         [HttpGet]
         [Route("/tasks/getAll")]
         public async Task<IActionResult> GetAllAsync()
@@ -86,29 +72,63 @@ namespace Reports.Server.Controllers
             return Ok(result);
         }
 
-        /*[HttpDelete]
-        [Route("/employees/deleteById")]
+        [HttpGet]
+        [Route("/tasks/findAssignedByEmployeeId")]
+        public IActionResult GetAssignedByEmployeeId([FromQuery][Required] Guid employeeId)
+        {
+            var result = _service.GetAssignedByEmployeeId(employeeId).ToList();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/tasks/findChangedByEmployeeId")]
+        public IActionResult GetChangedByEmployeeId([FromQuery][Required] Guid employeeId)
+        {
+            var result = _service.GetChangedByEmployeeId(employeeId).ToList();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("/tasks/findSubordinatesTasks")]
+        public IActionResult GetAllSubordinatesTasks([FromQuery][Required] Guid employeeId)
+        {
+            var result = _service.GetAllSubordinatesTasks(employeeId).ToList();
+            return Ok(result);
+        }
+
+        [HttpDelete]
+        [Route("/tasks/deleteById")]
         public async Task<IActionResult> DeleteByIdAsync([FromQuery][Required] Guid id)
         {
             await _service.DeleteByIdAsync(id);
             return Ok();
         }
 
-        [HttpDelete]
-        [Route("/employees/deleteByName")]
-        public async Task<IActionResult> DeleteByNameAsync([FromQuery][Required] string name)
+        [HttpPut]
+        [Route("/tasks/changeCondition")]
+        public async Task<IActionResult> ChangeConditionAsync(
+            [FromQuery][Required] Guid id, [FromQuery][Required] string condition)
         {
-            await _service.DeleteByNameAsync(name);
+            await _service.ChangeConditionAsync(id, condition);
             return Ok();
         }
 
         [HttpPut]
-        [Route("/employees/updateSupervisorAsync")]
-        public async Task<IActionResult> UpdateSupervisorAsync([FromQuery][Required] Guid updatingEmployeeId,
-            [FromQuery][Required] Guid newSupervisorId)
+        [Route("/tasks/changeAssignedEmployee")]
+        public async Task<IActionResult> ChangeAssignedEmployeeAsync(
+            [FromQuery][Required] Guid newAssignedEmployeeId, [FromQuery][Required] Guid taskId)
         {
-            await _service.UpdateSupervisorAsync(updatingEmployeeId, newSupervisorId);
+            await _service.ChangeAssignedEmployeeAsync(newAssignedEmployeeId, taskId);
             return Ok();
-        }*/
+        }
+
+        [HttpPatch]
+        [Route("/tasks/addComment")]
+        public async Task<IActionResult> AddCommentAsync([FromQuery] [Required] Guid employeeId,
+            [FromQuery] [Required] Guid taskId, [FromQuery] [Required] string message)
+        {
+            await _service.AddCommentAsync(employeeId, taskId, message);
+            return Ok();
+        }
     }
 }

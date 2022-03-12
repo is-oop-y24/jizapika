@@ -84,14 +84,20 @@ namespace Reports.Server.Services
             return task;
         }
 
-        public async Task ChangeCondition(Guid id, TaskCondition condition)
+        public async Task ChangeConditionAsync(Guid id, string condition)
         {
             TaskModel task = await GetByIdAsync(id);
-            task.Condition = condition;
+            task.Condition = condition switch
+            {
+                "open" => TaskCondition.Open,
+                "active" => TaskCondition.Active,
+                "resolved" => TaskCondition.Resolved,
+                _ => throw new ReportsException("Not correct condition.")
+            };
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddComment(Guid employeeId, Guid taskId, string message)
+        public async Task AddCommentAsync(Guid employeeId, Guid taskId, string message)
         {
             await _context.Comments.AddAsync(new Comment
             {
@@ -103,7 +109,7 @@ namespace Reports.Server.Services
             });
         }
 
-        public async Task ChangeAssignedEmployee(Guid newAssignedEmployeeId, Guid taskId)
+        public async Task ChangeAssignedEmployeeAsync(Guid newAssignedEmployeeId, Guid taskId)
         {
             TaskModel task = await GetByIdAsync(taskId);
             if (newAssignedEmployeeId == Guid.Empty)
@@ -124,6 +130,13 @@ namespace Reports.Server.Services
             }
 
             return tasks;
+        }
+
+        public async Task DeleteByIdAsync(Guid id)
+        {
+            TaskModel task = await GetByIdAsync(id);
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync();
         }
     }
 }

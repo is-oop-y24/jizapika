@@ -21,12 +21,14 @@ namespace Reports.Server.Services
         
         Task<TaskModel> CreateAsync(string name, string text, Guid assignedUserId);
         
-        Task ChangeCondition(Guid id, TaskCondition condition);
+        Task ChangeConditionAsync(Guid id, string condition);
         
-        Task AddComment(Guid employeeId, Guid taskId, string message);
+        Task AddCommentAsync(Guid employeeId, Guid taskId, string message);
         
-        Task ChangeAssignedEmployee(Guid newAssignedEmployeeId, Guid taskId);
+        Task ChangeAssignedEmployeeAsync(Guid newAssignedEmployeeId, Guid taskId);
 
         IEnumerable<TaskModel> GetAllSubordinatesTasks(Guid employeeId);
+
+        Task DeleteByIdAsync(Guid id);
     }
 }
