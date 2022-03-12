@@ -75,6 +75,10 @@ namespace Reports.Server.Services
             TaskModel task = new ();
             task.Name = name;
             task.Text = text;
+
+            Employee employee = await _context.Employees.FirstOrDefaultAsync(x => x.Id.Equals(assignedUserId));
+            if (!employee.Id.Equals(assignedUserId)) throw new ReportsException("Not found employee.");
+
             task.AssignedEmployeeId = assignedUserId;
             task.Condition = TaskCondition.Open;
             task.CreationDate = DateTime.Now;
@@ -107,6 +111,7 @@ namespace Reports.Server.Services
                 EmployeeId = employeeId,
                 TaskId = taskId
             });
+            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeAssignedEmployeeAsync(Guid newAssignedEmployeeId, Guid taskId)
@@ -130,6 +135,11 @@ namespace Reports.Server.Services
             }
 
             return tasks;
+        }
+
+        public IEnumerable<Comment> GetAllComments(Guid taskId)
+        {
+            return _context.Comments.Where(comment => comment.TaskId.Equals(taskId));
         }
 
         public async Task DeleteByIdAsync(Guid id)

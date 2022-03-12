@@ -74,7 +74,7 @@ namespace Reports.Server.Controllers
 
         [HttpGet]
         [Route("/tasks/findAssignedByEmployeeId")]
-        public IActionResult GetAssignedByEmployeeId([FromQuery][Required] Guid employeeId)
+        public IActionResult GetAssignedByEmployeeId([FromQuery] [Required] Guid employeeId)
         {
             var result = _service.GetAssignedByEmployeeId(employeeId).ToList();
             return Ok(result);
@@ -93,6 +93,14 @@ namespace Reports.Server.Controllers
         public IActionResult GetAllSubordinatesTasks([FromQuery][Required] Guid employeeId)
         {
             var result = _service.GetAllSubordinatesTasks(employeeId).ToList();
+            return Ok(result);
+        }
+        
+        [HttpGet]
+        [Route("/tasks/getAllComments")]
+        public IActionResult GetAllComments([FromQuery][Required] Guid taskId)
+        {
+            var result = _service.GetAllComments(taskId).ToList();
             return Ok(result);
         }
 

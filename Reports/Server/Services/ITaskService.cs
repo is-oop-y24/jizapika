@@ -29,6 +29,8 @@ namespace Reports.Server.Services
 
         IEnumerable<TaskModel> GetAllSubordinatesTasks(Guid employeeId);
 
+        IEnumerable<Comment> GetAllComments(Guid taskId);
+
         Task DeleteByIdAsync(Guid id);
     }
 }
